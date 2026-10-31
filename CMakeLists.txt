@@ -16,5 +16,6 @@ add_executable(Chipper
   src/display/display.cpp
   src/memory/memory.cpp
   src/font/font.cpp
+  src/cli/cli.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

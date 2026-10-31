@@ -1,11 +1,11 @@
-run:
+run *args="":
     cmake --build build
-    ./build/Chipper
+    ./build/Chipper {{args}}
 
-run-with-build:
+run-with-build *args="":
     cmake -B build
     cmake --build build
-    ./build/Chipper
+    ./build/Chipper {{args}}
 
 build:
     cmake -B build
