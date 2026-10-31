@@ -7,11 +7,11 @@ run-with-build *args="":
     cmake --build build
     ./build/Chipper {{args}}
 
-build:
-    cmake -B build
+build *args="":
+    cmake -B build {{args}}
 
-compile:
-    cmake --build build
+compile *args="":
+    cmake --build build {{args}}
 
-execute:
-    ./build/Chipper
+execute *args="":
+    ./build/Chipper {{args}}

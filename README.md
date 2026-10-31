@@ -32,12 +32,12 @@ cmake --build build
 
 With `just`:
 ```bash
-just execute
+just execute <file>
 ```
 
 Direct:
 ```bash
-./build/Chipper
+./build/Chipper <file>
 ```
 
 ---
@@ -45,11 +45,11 @@ Direct:
 ### Other just commands:
 
 ```bash
-just run
+just run <file>
 ```
 > Compiles and runs the code
 
 ```bash
-just run-with-build
+just run-with-build <file>
 ```
 > Builds, compiles and then runs the codes

@@ -1,5 +1,8 @@
 // Lines marked with `// *` are AI-generated
 
+#include "cli.hpp"
+
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
@@ -51,4 +54,19 @@ void sprtrWithText(std::string text, char symbol) {
 
     std::cout << "\n";
     std::cout << "\n";
+}
+
+void error(std::string message) {
+    std::cout << ERROR << ": " << message << "\n";
+
+    sprtrWithText("END");
+    exit(EXIT_FAILURE);
+}
+
+void warning(std::string message) {
+    std::cout << WARNING << ": " << message << "\n";
+}
+
+void info(std::string message) {
+    std::cout << INFO << ": " << message << "\n";
 }
