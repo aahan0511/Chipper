@@ -11,5 +11,10 @@ FetchContent_Declare(raylib
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(raylib)
 
-add_executable(Chipper main.cpp)
+add_executable(Chipper
+  main.cpp
+  src/display/display.cpp
+  src/memory/memory.cpp
+  src/font/font.cpp
+)
 target_link_libraries(Chipper PRIVATE raylib)
