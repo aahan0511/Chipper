@@ -4,4 +4,4 @@
 #include <vector>
 
 
-std::vector<uint16_t> getROM(int argc, char* args[]);
+std::vector<uint8_t> getROM(int argc, char* args[]);

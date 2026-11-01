@@ -1,6 +1,7 @@
 #include "src/display/display.hpp"
 #include "src/cli/cli.hpp"
 #include "src/files/files.hpp"
+#include "src/memory/memory.hpp"
 
 #include "raylib.h"
 
@@ -9,16 +10,17 @@
 #include <vector>
 
 
-void init() {
+void init(std::vector<uint8_t> &rom) {
     initDisplay();
+    loadROM(rom);
 }
 
 void loop() {
 
 }
 
-void runtime(std::vector<uint16_t> &rom) {
-    init();
+void runtime(std::vector<uint8_t> &rom) {
+    init(rom);
 
     while (!WindowShouldClose()) {
         loop();
@@ -32,7 +34,7 @@ void runtime(std::vector<uint16_t> &rom) {
 int main(int argc, char* args[]) {
     sprtrWithText("START");
 
-        std::vector<uint16_t> rom = getROM(argc, args);
+        std::vector<uint8_t> rom = getROM(argc, args);
 
         info("running " + (std::string)args[1] + ".");
 

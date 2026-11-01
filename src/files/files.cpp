@@ -23,7 +23,7 @@ void checkFile(std::string file_name, std::filesystem::path file_path) {
         warning("\"" + file_name + "\" might not be a CHIP-8 ROM.");
 }
 
-std::vector<uint16_t> getROM(int argc, char* args[]) {
+std::vector<uint8_t> getROM(int argc, char* args[]) {
     if (argc == 1) {
         error("please provide a chip-8 file to execute.");
     }
@@ -48,13 +48,8 @@ std::vector<uint16_t> getROM(int argc, char* args[]) {
         error("ROM does not fit in memory.");
     }
 
-    std::vector<uint8_t> byte_rom(size);                         // *
-    file.read(reinterpret_cast<char*>(byte_rom.data()), size);   // *
-
-    std::vector<uint16_t> rom(size / 2);
-    for (int i = 0; i < size; i += 2) {
-        rom[i / 2] = byte_rom[i] + byte_rom[i + 1];
-    }
+    std::vector<uint8_t> rom(size);                         // *
+    file.read(reinterpret_cast<char*>(rom.data()), size);   // *
 
     return rom;
 }

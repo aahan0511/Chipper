@@ -15,3 +15,9 @@ void setMemory(int addr, uint8_t byt) {
 uint8_t readMemory(int addr) {
     return memory[addr];
 }
+
+void loadROM(std::vector<uint8_t> &rom, int addr) {
+    for (uint8_t byt : rom) {
+        memory[addr++] = byt;
+    }
+}
