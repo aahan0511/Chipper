@@ -24,4 +24,6 @@ uint8_t readRegister(uint8_t vx);
 
 void setIndex(uint16_t content);
 
+bool addToIndex(uint8_t content);
+
 uint16_t readIndex();

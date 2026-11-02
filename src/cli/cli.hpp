@@ -11,9 +11,12 @@ void sprtrWithText(std::string text, char symbol = '=');
 constexpr std::string ERROR = "FATAL";
 constexpr std::string WARNING = "WARNING";
 constexpr std::string INFO = "INFO";
+constexpr std::string DEBUG = "DEBUG";
 
 void error(std::string message, std::string symbol = ERROR);
 
 void warning(std::string message, std::string symbol = WARNING);
 
 void info(std::string message, std::string symbol = INFO);
+
+void debug(std::string message, std::string symbol = DEBUG);

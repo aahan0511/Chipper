@@ -10,8 +10,6 @@
 uint16_t PC = START_ADDR;
 
 uint16_t setPC(uint16_t addr) {
-    if (addr >= MEMORY_SIZE || addr < 0)
-        error("memory out of bounds");
     PC = addr;
 
     return readPC();
@@ -20,14 +18,12 @@ uint16_t setPC(uint16_t addr) {
 uint16_t readPC() {
     uint16_t instruction = (readMemory(PC) * 0x100) + readMemory(PC + 1);
 
-    if(instruction == 0x0000)
-        error("memory out of bounds");
+    if (instruction == 0x0000)
+        error("program counter went outside of loaded rom");    // BUG: PC goes out of ROM in some tests
     return instruction;
 }
 
 uint16_t incrementPC() {
-    if (PC + 2 >= MEMORY_SIZE)
-        error("memory out of bounds");
     PC += 2;
 
     return readPC();
@@ -72,6 +68,12 @@ uint16_t index_register;
 
 void setIndex(uint16_t content) {
     index_register = content;
+}
+
+bool addToIndex(uint8_t content) {
+    int sum = readIndex() + content;
+    index_register = sum % 0x1000;
+    return sum > 0xFFF;
 }
 
 uint16_t readIndex() {

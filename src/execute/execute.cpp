@@ -5,10 +5,10 @@
 #include "../cli/cli.hpp"
 #include "../logical/logical.hpp"
 #include "../random/random.hpp"
+#include "../memory/memory.hpp"
 
 #include <cstdint>
 #include <stack>
-#include <string>
 
 
 std::stack<uint16_t> call_stack;
@@ -158,11 +158,11 @@ void execute() {
             break;
         }
         case 0xB: {
-            if (AMBIGUITY) {    // OLD
+            if (AMBIGUITY_JUMP_OFFSET) {            // ORIGINAL
                 uint8_t v0 = readRegister(0);
 
                 setPC(code_content + v0);
-            } else {            // NEW
+            } else {                                // NEW
                 uint8_t X = code_content / 0x100;
                 uint8_t x = readRegister(X);
 
@@ -198,6 +198,53 @@ void execute() {
             break;
         }
         case 0xF: {
+            uint8_t X = code_content / 0x100;
+            uint8_t x = readRegister(X);
+            uint8_t type = code_content % 0x100;
+            uint16_t I = readIndex();
+
+            switch (type) {
+                case (0x1E): {
+                    if (AMBIGUITY_ADD_INDEX) {                  // ORIGINAL
+                        addToIndex(x);
+                    } else {                                    // AMIGA
+                        bool overflowed = addToIndex(x);
+                        if (overflowed) setRegister(0xF, 1);
+                    }
+
+                    break;
+                }
+                case (0x33): {
+                    setMemory(I, x / 100);
+                    setMemory(I + 1, (x % 100) / 10);
+                    setMemory(I + 2, x % 10);
+
+                    break;
+                }
+                case (0x55): {
+                    if (AMBIGUITY_LOAD_REGISTER) {                                  // ORIGINAL
+                        for (; readIndex() <= X + I; addToIndex(1))
+                            setMemory(readIndex(), readRegister(readIndex() - I));
+                    } else {                                                        // NEW
+                        for (int i = I; i <= X + I; i++)
+                            setMemory(i, readRegister(i - I));
+                    }
+
+                    break;
+                }
+                case (0x65): {
+                    if (AMBIGUITY_LOAD_REGISTER) {                                  // ORIGINAL
+                        for (; readIndex() <= X + I; addToIndex(1))
+                            setRegister(readIndex() - I, readMemory(readIndex()));
+                    } else {                                                        // NEW
+                        for (int i = I; i <= X + I; i++)
+                            setRegister(i - I, readMemory(i));
+                    }
+
+                    break;
+                }
+            }
+
             break;
         }
     }

@@ -72,3 +72,7 @@ void warning(std::string message, std::string symbol) {
 void info(std::string message, std::string symbol) {
     std::cout << symbol << ": " << message << "\n";
 }
+
+void debug(std::string message, std::string symbol) {
+    std::cout << symbol << ": " << message << "\n";
+}
