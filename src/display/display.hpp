@@ -13,7 +13,10 @@ constexpr int TARGET_FPS = 60;
 constexpr Color BG = BLACK;
 constexpr Color FG = WHITE;
 
+
 void initDisplay();
+
+void displayEdit();
 
 
 void drawPixel(uint8_t x, uint8_t y);

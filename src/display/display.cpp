@@ -17,6 +17,20 @@ void initDisplay() {
     ClearBackground(BG);
 }
 
+bool editted_display = true;
+
+void displayEdit() {
+    editted_display = true;
+}
+
+bool displayChanged() {
+    return editted_display;
+}
+
+void resetDisplayStatus() {
+    editted_display = false;
+}
+
 
 std::vector<std::vector<Color>> display(SCREEN_HEIGHT, std::vector<Color>(SCREEN_WIDTH, BG));
 
@@ -33,11 +47,15 @@ void drawPixel(uint8_t x, uint8_t y) {
 void drawDisplay() {
     BeginDrawing();
 
+    if (displayChanged()) {
         for (uint8_t x = 0; x < SCREEN_WIDTH; x++)
             for (uint8_t y = 0; y < SCREEN_HEIGHT; y++)
                 drawPixel(x, y);
+    }
 
     EndDrawing();
+
+    resetDisplayStatus();
 }
 
 

@@ -50,20 +50,20 @@ std::vector<uint8_t> registers(REGISTER_N);
 
 void setRegister(uint8_t vx, uint8_t content) {
     if (vx >= REGISTER_N || vx < 0)
-        error("register memory out of bounds");
+        error("register out of bounds");
     registers[vx] = content;
 }
 
 uint8_t addToRegister(uint8_t vx, uint8_t content) {
     if (vx >= REGISTER_N || vx < 0)
-        error("register memory out of bounds");
+        error("register out of bounds");
     registers[vx] += content;
     return registers[vx];
 }
 
 uint8_t readRegister(uint8_t vx) {
     if (vx >= REGISTER_N || vx < 0)
-        error("register memory out of bounds");
+        error("register out of bounds");
     return registers[vx];
 }
 
