@@ -4,6 +4,7 @@
 #include "../draw/draw.hpp"
 #include "../cli/cli.hpp"
 #include "../logical/logical.hpp"
+#include "../random/random.hpp"
 
 #include <cstdint>
 #include <stack>
@@ -170,6 +171,13 @@ void execute() {
             break;
         }
         case 0xC: {
+            uint8_t X = code_content / 0x100;
+            uint8_t NN = code_content % 0x100;
+
+            uint8_t random_n = generateRandom();
+
+            setRegister(X, random_n & NN);
+
             break;
         }
         case 0xD: {
