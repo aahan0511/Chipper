@@ -55,7 +55,7 @@ void execute(uint16_t opcode) {
     }
 
     if (code_type == 0xD) {
-        uint16_t X, Y, N;
+        uint8_t X, Y, N;
         X = code_content / 0x100;
         Y = (code_content % 0x100) / 0x10;
         N = (code_content % 0x10);

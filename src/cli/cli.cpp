@@ -28,6 +28,7 @@ int getTerminalWidth() {
     return 80;                                                                  // *
 }
 
+
 void drawSprtr(char symbol) {
     std::cout << "\n";
 
@@ -56,17 +57,18 @@ void sprtrWithText(std::string text, char symbol) {
     std::cout << "\n";
 }
 
-void error(std::string message) {
-    std::cout << ERROR << ": " << message << "\n";
+
+void error(std::string message, std::string symbol) {
+    std::cout << symbol << ": " << message << "\n";
 
     sprtrWithText("END");
     exit(EXIT_FAILURE);
 }
 
-void warning(std::string message) {
-    std::cout << WARNING << ": " << message << "\n";
+void warning(std::string message, std::string symbol) {
+    std::cout << symbol << ": " << message << "\n";
 }
 
-void info(std::string message) {
-    std::cout << INFO << ": " << message << "\n";
+void info(std::string message, std::string symbol) {
+    std::cout << symbol << ": " << message << "\n";
 }

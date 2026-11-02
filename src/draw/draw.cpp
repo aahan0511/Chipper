@@ -6,13 +6,13 @@
 #include <cstdint>
 
 
-void drawSprite(uint8_t x, uint8_t y, int height) {
+void drawSprite(uint8_t x, uint8_t y, uint8_t height) {
     uint16_t addr = readIndex();
 
-    for (int i = 0; i < height; i++) {
+    for (uint8_t i = 0; i < height; i++) {
         uint8_t layer = readMemory(addr + i);
 
-        int cur_x = x + 7;
+        uint8_t cur_x = x + 7;
         while (layer > 0) {
             if (layer % 2) {
                 bool flipped_off = flipPixel(cur_x, y + i);

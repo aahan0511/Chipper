@@ -5,9 +5,9 @@
 #include <vector>
 
 
-int PC = START_ADDR;
+uint16_t PC = START_ADDR;
 
-uint16_t setPC(int addr) {
+uint16_t setPC(uint16_t addr) {
     if (addr >= 4096)
         return -1;
     PC = addr;
@@ -34,16 +34,16 @@ constexpr int REGISTER_N = 16;
 
 std::vector<uint8_t> registers(16);
 
-void setRegister(int vx, uint8_t content) {
+void setRegister(uint8_t vx, uint8_t content) {
     registers[vx] = content;
 }
 
-uint8_t addToRegister(int vx, uint8_t content) {
+uint8_t addToRegister(uint8_t vx, uint8_t content) {
     registers[vx] += content;
     return registers[vx];
 }
 
-uint8_t readRegister(int vx) {
+uint8_t readRegister(uint8_t vx) {
     return registers[vx];
 }
 

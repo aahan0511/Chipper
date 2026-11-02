@@ -3,18 +3,18 @@
 #include <cstdint>
 
 
-uint16_t setPC(int addr);
+uint16_t setPC(uint16_t addr);
 
 uint16_t readPC();
 
 uint16_t incrementPC();
 
 
-void setRegister(int vx, uint8_t content);
+void setRegister(uint8_t vx, uint8_t content);
 
-uint8_t addToRegister(int vx, uint8_t content);
+uint8_t addToRegister(uint8_t vx, uint8_t content);
 
-uint8_t readRegister(int vx);
+uint8_t readRegister(uint8_t vx);
 
 
 void setIndex(uint16_t content);

@@ -3,4 +3,4 @@
 #include <cstdint>
 
 
-void drawSprite(uint8_t x, uint8_t y, int height);
+void drawSprite(uint8_t x, uint8_t y, uint8_t height);

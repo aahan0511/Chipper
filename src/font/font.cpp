@@ -5,10 +5,8 @@
 #include <cstdint>
 #include <vector>
 
-using byte5 = std::array<uint8_t, 5>;
 
-
-std::vector<byte5> font = {
+std::vector<std::array<uint8_t, 5>> font = {
     {0xF0, 0x90, 0x90, 0x90, 0xF0}, // 0
     {0x20, 0x60, 0x20, 0x20, 0x70}, // 1
     {0xF0, 0x10, 0xF0, 0x80, 0xF0}, // 2
@@ -27,8 +25,8 @@ std::vector<byte5> font = {
     {0xF0, 0x80, 0xF0, 0x80, 0x80}, // F
 };
 
-void loadFont(int startAddr) {
-    for (int glyph = 0x0; glyph < 0xF; glyph++) {
+void loadFont(uint16_t startAddr) {
+    for (uint8_t glyph = 0x0; glyph < 0xF; glyph++) {
         for (uint8_t byt : font[glyph]) {
             setMemory(startAddr, byt);
             startAddr++;

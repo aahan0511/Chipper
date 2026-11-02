@@ -23,6 +23,7 @@ void checkFile(std::string file_name, std::filesystem::path file_path) {
         warning("\"" + file_name + "\" might not be a CHIP-8 ROM.");
 }
 
+
 std::vector<uint8_t> getROM(int argc, char* args[]) {
     if (argc == 1) {
         error("please provide a chip-8 file to execute.");

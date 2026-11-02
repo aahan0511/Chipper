@@ -1,4 +1,6 @@
 #pragma once
 
+#include <cstdint>
 
-void loadFont(int startAddr = 0x050);
+
+void loadFont(uint16_t startAddr = 0x050);

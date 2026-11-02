@@ -2,9 +2,11 @@
 
 #include "raylib.h"
 
+#include <cstdint>
 
-constexpr int SCREEN_WIDTH = 64;
-constexpr int SCREEN_HEIGHT = 32;
+
+constexpr uint8_t SCREEN_WIDTH = 64;
+constexpr uint8_t SCREEN_HEIGHT = 32;
 constexpr int PIXEL_SIZE = 30;
 constexpr int TARGET_FPS = 60;
 
@@ -16,13 +18,13 @@ void initDisplay();
 void drawDisplay();
 
 
-void setPixel(int x, int y, Color color);
+void setPixel(uint8_t x, uint8_t y, Color color);
 
-bool flipPixel(int x, int y);
+bool flipPixel(uint8_t x, uint8_t y);
 
-void setPixelOn(int x, int y);
+void setPixelOn(uint8_t x, uint8_t y);
 
-void setPixelOff(int x, int y);
+void setPixelOff(uint8_t x, uint8_t y);
 
 
 void clearDisplay();
