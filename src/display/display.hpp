@@ -15,6 +15,9 @@ constexpr Color FG = WHITE;
 
 void initDisplay();
 
+
+void drawPixel(uint8_t x, uint8_t y);
+
 void drawDisplay();
 
 

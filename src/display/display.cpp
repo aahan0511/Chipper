@@ -20,19 +20,23 @@ void initDisplay() {
 
 std::vector<std::vector<Color>> display(SCREEN_HEIGHT, std::vector<Color>(SCREEN_WIDTH, BG));
 
+void drawPixel(uint8_t x, uint8_t y) {
+    DrawRectangle(
+        x * PIXEL_SIZE,
+        y * PIXEL_SIZE,
+        PIXEL_SIZE,
+        PIXEL_SIZE,
+        display[y][x]
+    );
+}
+
 void drawDisplay() {
     BeginDrawing();
-        for (uint8_t x = 0; x < SCREEN_WIDTH; x++) {
-            for (uint8_t y = 0; y < SCREEN_HEIGHT; y++) {
-                DrawRectangle(
-                    x * PIXEL_SIZE,
-                    y * PIXEL_SIZE,
-                    PIXEL_SIZE,
-                    PIXEL_SIZE,
-                    display[y][x]
-                );
-            }
-        }
+
+        for (uint8_t x = 0; x < SCREEN_WIDTH; x++)
+            for (uint8_t y = 0; y < SCREEN_HEIGHT; y++)
+                drawPixel(x, y);
+
     EndDrawing();
 }
 
@@ -45,6 +49,7 @@ bool flipPixel(uint8_t x, uint8_t y) {
     display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = ColorIsEqual(
         display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG
     ) ? FG : BG;
+
     return ColorIsEqual(display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG);
 }
 

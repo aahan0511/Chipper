@@ -4,6 +4,8 @@
 #include <vector>
 
 
+constexpr int MEMORY_SIZE = 4096;
+
 void setMemory(uint16_t addr, uint8_t byt);
 
 uint8_t readMemory(uint16_t addr);

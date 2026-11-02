@@ -3,4 +3,9 @@
 #include <cstdint>
 
 
-void execute(uint16_t opcode);
+void addCall(uint16_t call);
+
+uint16_t popCall();
+
+
+void execute();

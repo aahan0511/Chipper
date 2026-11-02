@@ -2,7 +2,6 @@
 #include "src/cli/cli.hpp"
 #include "src/files/files.hpp"
 #include "src/memory/memory.hpp"
-#include "src/cpu/cpu.hpp"
 #include "src/execute/execute.hpp"
 
 #include "raylib.h"
@@ -17,20 +16,11 @@ void init(std::vector<uint8_t> &rom) {
     loadROM(rom);
 }
 
-void loop() {
-    uint16_t opcode = readPC();
-
-    if (opcode == (uint16_t)(-1)) {
-        error("memory out of bounds");
-    }
-    execute(opcode);
-}
-
 void runtime(std::vector<uint8_t> &rom) {
     init(rom);
 
     while (!WindowShouldClose()) {
-        loop();
+        execute();
 
         drawDisplay();
     }

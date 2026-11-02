@@ -10,6 +10,11 @@ uint16_t readPC();
 uint16_t incrementPC();
 
 
+void stackPC(uint16_t call);
+
+void returnPC();
+
+
 void setRegister(uint8_t vx, uint8_t content);
 
 uint8_t addToRegister(uint8_t vx, uint8_t content);

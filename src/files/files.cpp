@@ -45,10 +45,6 @@ std::vector<uint8_t> getROM(int argc, char* args[]) {
         error("failed to read ROM.");
     }
 
-    if (size > 4096 - 0x200) {
-        error("ROM does not fit in memory.");
-    }
-
     std::vector<uint8_t> rom(size);                         // *
     file.read(reinterpret_cast<char*>(rom.data()), size);   // *
 
