@@ -157,6 +157,16 @@ void execute() {
             break;
         }
         case 0xB: {
+            if (AMBIGUITY) {    // OLD
+                uint8_t v0 = readRegister(0);
+
+                setPC(code_content + v0);
+            } else {            // NEW
+                uint8_t X = code_content / 0x100;
+                uint8_t x = readRegister(X);
+
+                setPC(code_content + x);
+            }
             break;
         }
         case 0xC: {
