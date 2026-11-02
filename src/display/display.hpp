@@ -15,8 +15,14 @@ void initDisplay();
 
 void drawDisplay();
 
+
 void setPixel(int x, int y, Color color);
+
+bool flipPixel(int x, int y);
 
 void setPixelOn(int x, int y);
 
 void setPixelOff(int x, int y);
+
+
+void clearDisplay();

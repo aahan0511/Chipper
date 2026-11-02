@@ -19,5 +19,7 @@ add_executable(Chipper
   src/cli/cli.cpp
   src/files/files.cpp
   src/cpu/cpu.cpp
+  src/execute/execute.cpp
+  src/draw/draw.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

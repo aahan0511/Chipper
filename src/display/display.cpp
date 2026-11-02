@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 
+#include <algorithm>
 #include <vector>
 
 
@@ -34,14 +35,27 @@ void drawDisplay() {
     EndDrawing();
 }
 
+
 void setPixel(int x, int y, Color color) {
-    display[y][x] = color;
+    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = color;
+}
+
+bool flipPixel(int x, int y) {
+    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = ColorIsEqual(
+        display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG
+    ) ? FG : BG;
+    return ColorIsEqual(display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG);
 }
 
 void setPixelOn(int x, int y) {
-    display[y][x] = FG;
+    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = FG;
 }
 
 void setPixelOff(int x, int y) {
-    display[y][x] = BG;
+    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = BG;
+}
+
+
+void clearDisplay() {
+    std::fill(display.begin(), display.end(), std::vector<Color>(SCREEN_WIDTH, BG));
 }
