@@ -21,5 +21,6 @@ add_executable(Chipper
   src/cpu/cpu.cpp
   src/execute/execute.cpp
   src/draw/draw.cpp
+  src/logical/logical.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

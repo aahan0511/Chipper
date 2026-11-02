@@ -3,6 +3,7 @@
 #include "../cpu/cpu.hpp"
 #include "../draw/draw.hpp"
 #include "../cli/cli.hpp"
+#include "../logical/logical.hpp"
 
 #include <cstdint>
 #include <stack>
@@ -101,6 +102,43 @@ void execute() {
             break;
         }
         case 0x8: {
+            uint16_t X = code_content / 0x100;
+            uint16_t Y = (code_content % 0x100) / 0x10;
+            uint16_t operation = code_content % 0x10;
+
+            uint8_t x = readRegister(X);
+            uint8_t y = readRegister(Y);
+
+            switch (operation) {
+                case 0x0:
+                    op0(X, Y, x, y);
+                    break;
+                case 0x1:
+                    op1(X, Y, x, y);
+                    break;
+                case 0x2:
+                    op2(X, Y, x, y);
+                    break;
+                case 0x3:
+                    op3(X, Y, x, y);
+                    break;
+                case 0x4:
+                    op4(X, Y, x, y);
+                    break;
+                case 0x5:
+                    op5(X, Y, x, y);
+                    break;
+                case 0x7:
+                    op7(X, Y, x, y);
+                    break;
+                case 0x6:
+                    op6(X, Y, x, y);
+                    break;
+                case 0xE:
+                    opE(X, Y, x, y);
+                    break;
+            }
+
             break;
         }
         case 0x9: {
