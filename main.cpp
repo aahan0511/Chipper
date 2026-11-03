@@ -16,13 +16,24 @@ void init(std::vector<uint8_t> &rom) {
     loadROM(rom);
 }
 
+uint16_t loop(uint16_t steps) {
+    execute();
+    steps++;
+
+    if (steps > TARGET_STEPS) {
+        steps = 0;
+        drawDisplay();
+    }
+
+    return steps;
+}
+
 void runtime(std::vector<uint8_t> &rom) {
     init(rom);
 
+    uint16_t steps = 0;
     while (!WindowShouldClose()) {
-        execute();
-
-        drawDisplay();
+        steps = loop(steps);
     }
 
     CloseWindow();
