@@ -3,11 +3,11 @@
 #include <cstdint>
 
 
-uint16_t setPC(uint16_t addr);
+void setPC(uint16_t addr);
 
 uint16_t readPC();
 
-uint16_t incrementPC();
+void incrementPC();
 
 
 void stackPC(uint16_t call);

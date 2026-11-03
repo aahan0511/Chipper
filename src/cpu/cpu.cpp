@@ -9,24 +9,20 @@
 
 uint16_t PC = START_ADDR;
 
-uint16_t setPC(uint16_t addr) {
+void setPC(uint16_t addr) {
     PC = addr;
-
-    return readPC();
 }
 
 uint16_t readPC() {
     uint16_t instruction = (readMemory(PC) * 0x100) + readMemory(PC + 1);
 
     if (instruction == 0x0000)
-        error("program counter went outside of loaded rom");    // BUG: PC goes out of ROM in some tests
+        error("program counter went outside of loaded rom");
     return instruction;
 }
 
-uint16_t incrementPC() {
+void incrementPC() {
     PC += 2;
-
-    return readPC();
 }
 
 
