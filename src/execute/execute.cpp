@@ -8,6 +8,7 @@
 #include "../memory/memory.hpp"
 #include "../keypad/keypad.hpp"
 #include "../timer/timer.hpp"
+#include "../font/font.hpp"
 
 #include <cstdint>
 #include <stack>
@@ -280,6 +281,11 @@ void execute() {
                 }
                 case (0x18): {
                     setSoundTimer(x);
+
+                    break;
+                }
+                case (0x29): {
+                    setIndex(getFontAddr(x));
 
                     break;
                 }

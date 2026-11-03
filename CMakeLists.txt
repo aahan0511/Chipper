@@ -26,5 +26,6 @@ add_executable(Chipper
   src/keypad/keypad.cpp
   src/sound/sound.cpp
   src/timer/timer.cpp
+  src/font/font.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

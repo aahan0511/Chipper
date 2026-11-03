@@ -33,3 +33,10 @@ void loadFont(uint16_t startAddr) {
         }
     }
 }
+
+
+uint16_t getFontAddr(uint8_t c) {
+    c %= 0x10;
+
+    return FONT_START_ADDR + (c * 5);
+}
