@@ -9,6 +9,8 @@ uint16_t readPC();
 
 void incrementPC();
 
+void decrementPC();
+
 
 void stackPC(uint16_t call);
 

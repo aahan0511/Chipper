@@ -3,8 +3,8 @@
 #include "src/files/files.hpp"
 #include "src/memory/memory.hpp"
 #include "src/execute/execute.hpp"
-
-#include "raylib.h"
+#include "src/sound/sound.hpp"
+#include "src/timer/timer.hpp"
 
 #include <cstdint>
 #include <string>
@@ -13,10 +13,19 @@
 
 void init(std::vector<uint8_t> &rom) {
     initDisplay();
+    initAudio();
     loadROM(rom);
 }
 
+void deinit() {
+    closeDisplay();
+    closeAudio();
+}
+
 uint16_t loop(uint16_t steps) {
+    if (checkSoundTimer())
+        playSound();
+
     execute();
     steps++;
 
@@ -32,11 +41,11 @@ void runtime(std::vector<uint8_t> &rom) {
     init(rom);
 
     uint16_t steps = 0;
-    while (!WindowShouldClose()) {
+    while (checkDisplay()) {
         steps = loop(steps);
     }
 
-    CloseWindow();
+    deinit();
 }
 
 

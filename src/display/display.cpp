@@ -17,6 +17,15 @@ void initDisplay() {
     ClearBackground(BG);
 }
 
+bool checkDisplay() {
+    return !(WindowShouldClose());
+}
+
+void closeDisplay() {
+    CloseWindow();
+}
+
+
 bool editted_display = true;
 
 void displayEdit() {

@@ -25,6 +25,10 @@ void incrementPC() {
     PC += 2;
 }
 
+void decrementPC() {
+    PC -= 2;
+}
+
 
 void stackPC(uint16_t call) {
     addCall(PC);

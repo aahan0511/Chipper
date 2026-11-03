@@ -23,5 +23,8 @@ add_executable(Chipper
   src/draw/draw.cpp
   src/logical/logical.cpp
   src/random/random.cpp
+  src/keypad/keypad.cpp
+  src/sound/sound.cpp
+  src/timer/timer.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

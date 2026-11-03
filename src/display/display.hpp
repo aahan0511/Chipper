@@ -17,6 +17,11 @@ constexpr Color FG = WHITE;
 
 void initDisplay();
 
+bool checkDisplay();
+
+void closeDisplay();
+
+
 void displayEdit();
 
 

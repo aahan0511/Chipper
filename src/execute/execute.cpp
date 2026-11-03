@@ -6,6 +6,8 @@
 #include "../logical/logical.hpp"
 #include "../random/random.hpp"
 #include "../memory/memory.hpp"
+#include "../keypad/keypad.hpp"
+#include "../timer/timer.hpp"
 
 #include <cstdint>
 #include <stack>
@@ -195,6 +197,19 @@ void execute() {
             break;
         }
         case 0xE: {
+            uint8_t X = code_content / 0x100;
+            uint8_t type = code_content % 0x100;
+
+            uint8_t x = readRegister(X);
+
+            if (type == 0x9E) {
+                if (isKeyDown(x))
+                    incrementPC();
+            } else if (type == 0xA1) {
+                if (isKeyUp(x))
+                    incrementPC();
+            }
+
             break;
         }
         case 0xF: {
@@ -240,6 +255,31 @@ void execute() {
                         for (int i = I; i <= X + I; i++)
                             setRegister(i - I, readMemory(i));
                     }
+
+                    break;
+                }
+                case (0x0A): {
+                    uint8_t pressed_key = anyKeyPressed();
+                    if (pressed_key == (uint8_t)(-1)) {
+                        decrementPC();
+                    } else {
+                        setRegister(X, pressed_key);
+                    }
+
+                    break;
+                }
+                case (0x07): {
+                    setRegister(X, readDelayTimer());
+
+                    break;
+                }
+                case (0x15): {
+                    setDelayTimer(x);
+
+                    break;
+                }
+                case (0x18): {
+                    setSoundTimer(x);
 
                     break;
                 }
