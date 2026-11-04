@@ -3,8 +3,8 @@
 #include "raylib.h"
 
 #include <cstdint>
-#include <utility>
 #include <set>
+#include <utility>
 
 
 bool isKeyDown(uint8_t key) {

@@ -1,7 +1,9 @@
 #include "cpu.hpp"
-#include "../memory/memory.hpp"
-#include "../execute/execute.hpp"
+
 #include "../cli/cli.hpp"
+#include "../execute/execute.hpp"
+#include "../memory/memory.hpp"
+#include "../quirks/quirks.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -10,14 +12,12 @@
 uint16_t PC = START_ADDR;
 
 void setPC(uint16_t addr) {
-    PC = addr;
+    PC = addr % 0x1000;
 }
 
 uint16_t readPC() {
-    uint16_t instruction = (readMemory(PC) * 0x100) + readMemory(PC + 1);
+    uint16_t instruction = (readMemory(PC % 0x1000) * 0x100) + readMemory((PC + 1) % 0x1000);
 
-    if (instruction == 0x0000)
-        error("program counter went outside of loaded rom");
     return instruction;
 }
 
@@ -78,4 +78,15 @@ bool addToIndex(uint8_t content) {
 
 uint16_t readIndex() {
     return index_register;
+}
+
+void updateIndexUpdate(int X) {
+    if (checkQuirk("memoryLeaveIUnchanged"))
+        return;
+
+    if (checkQuirk("memoryIncrementByX")) {
+        setIndex(readIndex() + X);
+    } else {
+        setIndex(readIndex() + X + 1);
+    }
 }

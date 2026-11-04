@@ -34,7 +34,13 @@ Sound makeBeep(float freq, float seconds, float volume = 0.4f) {    // *
 Sound beep;
 
 void playSound() {
+    if (IsSoundPlaying(beep)) return;
     PlaySound(beep);
+}
+
+void stopSound() {
+    if (IsSoundPlaying(beep))
+        StopSound(beep);
 }
 
 

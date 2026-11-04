@@ -29,3 +29,5 @@ void setIndex(uint16_t content);
 bool addToIndex(uint8_t content);
 
 uint16_t readIndex();
+
+void updateIndexUpdate(int X);

@@ -1,7 +1,7 @@
 #include "timer.hpp"
 
-#include <cstdint>
 #include <chrono>
+#include <cstdint>
 
 
  std::chrono::time_point delay_timer_time = std::chrono::steady_clock::now();

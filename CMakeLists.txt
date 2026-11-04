@@ -13,19 +13,20 @@ FetchContent_MakeAvailable(raylib)
 
 add_executable(Chipper
   main.cpp
-  src/display/display.cpp
-  src/memory/memory.cpp
-  src/font/font.cpp
   src/cli/cli.cpp
-  src/files/files.cpp
   src/cpu/cpu.cpp
-  src/execute/execute.cpp
+  src/display/display.cpp
   src/draw/draw.cpp
-  src/logical/logical.cpp
-  src/random/random.cpp
+  src/execute/execute.cpp
+  src/files/files.cpp
+  src/font/font.cpp
   src/keypad/keypad.cpp
+  src/logical/logical.cpp
+  src/memory/memory.cpp
+  src/quirks/quirks.cpp
+  src/random/random.cpp
+  src/runtime/runtime.cpp
   src/sound/sound.cpp
   src/timer/timer.cpp
-  src/font/font.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

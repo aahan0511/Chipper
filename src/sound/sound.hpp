@@ -3,6 +3,8 @@
 
 void playSound();
 
+void stopSound();
+
 
 void initAudio();
 

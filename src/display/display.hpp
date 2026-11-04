@@ -24,6 +24,8 @@ void closeDisplay();
 
 void displayEdit();
 
+bool displayEdited();
+
 
 void drawPixel(uint8_t x, uint8_t y);
 

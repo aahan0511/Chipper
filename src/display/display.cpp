@@ -14,7 +14,9 @@ void initDisplay() {
     );
 
     SetTargetFPS(TARGET_FPS);
-    ClearBackground(BG);
+
+    clearDisplay();
+    drawDisplay();
 }
 
 bool checkDisplay() {
@@ -26,18 +28,18 @@ void closeDisplay() {
 }
 
 
-bool editted_display = true;
+bool edited_display = true;
 
 void displayEdit() {
-    editted_display = true;
+    edited_display = true;
 }
 
-bool displayChanged() {
-    return editted_display;
+bool displayEdited() {
+    return edited_display;
 }
 
 void resetDisplayStatus() {
-    editted_display = false;
+    edited_display = false;
 }
 
 
@@ -56,36 +58,33 @@ void drawPixel(uint8_t x, uint8_t y) {
 void drawDisplay() {
     BeginDrawing();
 
-    if (displayChanged()) {
-        for (uint8_t x = 0; x < SCREEN_WIDTH; x++)
-            for (uint8_t y = 0; y < SCREEN_HEIGHT; y++)
-                drawPixel(x, y);
-    }
+    for (uint8_t x = 0; x < SCREEN_WIDTH; x++)
+        for (uint8_t y = 0; y < SCREEN_HEIGHT; y++)
+            drawPixel(x, y);
 
     EndDrawing();
-
     resetDisplayStatus();
 }
 
 
 void setPixel(uint8_t x, uint8_t y, Color color) {
-    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = color;
+    display[y][x] = color;
 }
 
 bool flipPixel(uint8_t x, uint8_t y) {
-    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = ColorIsEqual(
-        display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG
+    display[y][x] = ColorIsEqual(
+        display[y][x], BG
     ) ? FG : BG;
 
-    return ColorIsEqual(display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH], BG);
+    return ColorIsEqual(display[y][x], BG);
 }
 
 void setPixelOn(uint8_t x, uint8_t y) {
-    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = FG;
+    display[y][x] = FG;
 }
 
 void setPixelOff(uint8_t x, uint8_t y) {
-    display[y % SCREEN_HEIGHT][x % SCREEN_WIDTH] = BG;
+    display[y][x] = BG;
 }
 
 

@@ -2,6 +2,8 @@
 
 #include "cli.hpp"
 
+#include "../runtime/runtime.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <string>
@@ -42,9 +44,15 @@ void drawSprtr(char symbol) {
 }
 
 void sprtrWithText(std::string text, char symbol) {
+    if (getTerminalWidth() <= text.size()) {
+        drawSprtr(symbol);
+        return;
+    }
+
     std::cout << "\n";
 
-    int width = (getTerminalWidth() - text.size()) / 2;
+    int t_width = getTerminalWidth();
+    int width = (t_width - text.size()) / 2;
     for (int _ = 0; _ < width; _++) {
         std::cout << symbol;
     }
@@ -52,6 +60,9 @@ void sprtrWithText(std::string text, char symbol) {
     for (int _ = 0; _ < width; _++) {
         std::cout << symbol;
     }
+
+    if (2 * width + text.size() < t_width)
+        std::cout << symbol;
 
     std::cout << "\n";
     std::cout << "\n";
@@ -62,6 +73,8 @@ void error(std::string message, std::string symbol) {
     std::cout << symbol << ": " << message << "\n";
 
     sprtrWithText("END");
+    if (checkInit())
+        deinit();
     exit(EXIT_FAILURE);
 }
 

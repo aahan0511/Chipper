@@ -1,4 +1,5 @@
 #include "font.hpp"
+
 #include "../memory/memory.hpp"
 
 #include <array>
@@ -26,7 +27,7 @@ std::vector<std::array<uint8_t, 5>> font = {
 };
 
 void loadFont(uint16_t startAddr) {
-    for (uint8_t glyph = 0x0; glyph < 0xF; glyph++) {
+    for (uint8_t glyph = 0x0; glyph <= 0xF; glyph++) {
         for (uint8_t byt : font[glyph]) {
             setMemory(startAddr, byt);
             startAddr++;

@@ -1,22 +1,31 @@
 #include "execute.hpp"
-#include "../display/display.hpp"
-#include "../cpu/cpu.hpp"
-#include "../draw/draw.hpp"
+
 #include "../cli/cli.hpp"
-#include "../logical/logical.hpp"
-#include "../random/random.hpp"
-#include "../memory/memory.hpp"
-#include "../keypad/keypad.hpp"
-#include "../timer/timer.hpp"
+#include "../cpu/cpu.hpp"
+#include "../display/display.hpp"
+#include "../draw/draw.hpp"
 #include "../font/font.hpp"
+#include "../keypad/keypad.hpp"
+#include "../logical/logical.hpp"
+#include "../memory/memory.hpp"
+#include "../quirks/quirks.hpp"
+#include "../random/random.hpp"
+#include "../timer/timer.hpp"
 
 #include <cstdint>
+#include <format>
 #include <stack>
+#include <string>
 
+
+constexpr uint8_t call_stack_depth = 0x10;
 
 std::stack<uint16_t> call_stack;
 
 void addCall(uint16_t call) {
+    if (call_stack.size() == call_stack_depth)
+        error("call stack full");
+
     call_stack.push(call);
 }
 
@@ -31,6 +40,11 @@ uint16_t popCall() {
 }
 
 
+bool warned_0 = false;
+bool warned_8 = false;
+bool warned_E = false;
+bool warned_F = false;
+
 void execute() {
     uint16_t opcode = readPC();
     incrementPC();
@@ -42,11 +56,13 @@ void execute() {
         case 0x0: {
             if (opcode == 0x00E0) {
                 clearDisplay();
-                displayEdit();
-            }
-
-            if (opcode == 0x00EE) {
+            } else if (opcode == 0x00EE) {
                 returnPC();
+            } else {
+                if (!(warned_0)) {
+                    warning("opcode 0x" + std::format("{:04X}", opcode) + " is ignored");
+                    warned_0 = true;
+                }
             }
 
             break;
@@ -141,6 +157,13 @@ void execute() {
                 case 0xE:
                     opE(X, Y, x, y);
                     break;
+                default: {
+                    if (!(warned_8)) {
+                        warning("unknown opcode 0x" + std::format("{:04X}", opcode) + " used");
+                        warned_8 = true;
+                    }
+                    break;
+                }
             }
 
             break;
@@ -161,15 +184,15 @@ void execute() {
             break;
         }
         case 0xB: {
-            if (AMBIGUITY_JUMP_OFFSET) {            // ORIGINAL
-                uint8_t v0 = readRegister(0);
-
-                setPC(code_content + v0);
-            } else {                                // NEW
+            if (checkQuirk("jump")) {
                 uint8_t X = code_content / 0x100;
                 uint8_t x = readRegister(X);
 
                 setPC(code_content + x);
+            } else {
+                uint8_t v0 = readRegister(0);
+
+                setPC(code_content + v0);
             }
             break;
         }
@@ -209,6 +232,11 @@ void execute() {
             } else if (type == 0xA1) {
                 if (isKeyUp(x))
                     incrementPC();
+            } else {
+                if (!(warned_E)) {
+                    warning("unknown opcode 0x" + std::format("{:04X}", opcode) + " used");
+                    warned_E = true;
+                }
             }
 
             break;
@@ -221,11 +249,12 @@ void execute() {
 
             switch (type) {
                 case (0x1E): {
-                    if (AMBIGUITY_ADD_INDEX) {                  // ORIGINAL
+                    if (checkQuirk("addIndexLeaveFUnchanged")) {
                         addToIndex(x);
-                    } else {                                    // AMIGA
+                    } else {
                         bool overflowed = addToIndex(x);
                         if (overflowed) setRegister(0xF, 1);
+                        else setRegister(0xF, 0);
                     }
 
                     break;
@@ -238,24 +267,18 @@ void execute() {
                     break;
                 }
                 case (0x55): {
-                    if (AMBIGUITY_LOAD_REGISTER) {                                  // ORIGINAL
-                        for (; readIndex() <= X + I; addToIndex(1))
-                            setMemory(readIndex(), readRegister(readIndex() - I));
-                    } else {                                                        // NEW
-                        for (int i = I; i <= X + I; i++)
-                            setMemory(i, readRegister(i - I));
-                    }
+                    for (int i = I; i <= X + I; i++)
+                        setMemory(i, readRegister(i - I));
+
+                    updateIndexUpdate(X);
 
                     break;
                 }
                 case (0x65): {
-                    if (AMBIGUITY_LOAD_REGISTER) {                                  // ORIGINAL
-                        for (; readIndex() <= X + I; addToIndex(1))
-                            setRegister(readIndex() - I, readMemory(readIndex()));
-                    } else {                                                        // NEW
-                        for (int i = I; i <= X + I; i++)
-                            setRegister(i - I, readMemory(i));
-                    }
+                    for (int i = I; i <= X + I; i++)
+                        setRegister(i - I, readMemory(i));
+
+                    updateIndexUpdate(X);
 
                     break;
                 }
@@ -286,6 +309,14 @@ void execute() {
                 }
                 case (0x29): {
                     setIndex(getFontAddr(x));
+
+                    break;
+                }
+                default: {
+                    if (!(warned_F)) {
+                        warning("unknown opcode 0x" + std::format("{:04X}", opcode) + " used");
+                        warned_F = true;
+                    }
 
                     break;
                 }
