@@ -1,6 +1,7 @@
 # CHIP-8 Emulator
 
-This project is a CHIP-8 emulator for [Hack Club's Chipper](https://chipper.hackclub.com/).
+This project is a CHIP-8 emulator for [Hack Club's Chipper](https://chipper.hackclub.com/) written in C++ and raylib.
+The emulator implements the base CHIP-8 instructions with quirks aligned to the original COSMIC VIP.
 
 ## Running
 
@@ -52,4 +53,19 @@ just run <file>
 ```bash
 just run-with-build <file>
 ```
-> Builds, compiles and then runs the codes
+> Builds, compiles and then runs the code
+
+## To-do
+
+- [x] Make the base CHIP-8 emulator
+- [ ] Make a frontend around the emulator
+- [ ] Add SUPER-CHIP support (maybe)
+- [ ] Add XO-CHIP support (maybe)
+
+## Credits
+
+Most of my work is based on [Guide to making a CHIP-8 emulator](https://tobiasvl.github.io/blog/write-a-chip-8-emulator/) by [Tobias V. I. Langhoff](https://github.com/tobiasvl), he really has written an amazing guide.
+
+And without [Timendus' CHIP-8 test suite](https://github.com/Timendus/chip8-test-suite), I would not have been able to work out any of the bugs and quirks.
+
+Huge thanks to both of them!
