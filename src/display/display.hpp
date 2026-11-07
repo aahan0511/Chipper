@@ -5,8 +5,8 @@
 #include <cstdint>
 
 
-constexpr uint8_t SCREEN_WIDTH = PLATFORM_COSMIC ? 64 : 128;
-constexpr uint8_t SCREEN_HEIGHT = PLATFORM_COSMIC ? 32 : 64;
+inline uint8_t SCREEN_WIDTH = PLATFORM_COSMIC ? 64 : 128;
+inline uint8_t SCREEN_HEIGHT = PLATFORM_COSMIC ? 32 : 64;
 
 
 void initDisplay();

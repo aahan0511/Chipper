@@ -14,18 +14,18 @@
         // CHIP-8 was first designed by Joseph Weisbecker for the Cosmac VIP hobbyist DIY computer in 1977. After publishing about the virtual instruction set in the december 1978 issue of Byte magazine (under the title \"An easy programming system\") it took off on more hobbyist computers. One of the biggest advantages of programming in CHIP-8, apart from being relatively easy to use, was the fact that CHIP-8 ROMs were binary compatible between several different hobbyist computers.
     // false -> Superchip 1.1
         // Superchip 1.1 is the platform that most \"superchip\" interpreters implement, because it is the latest version and also because the difference between Superchip version 1.0 and 1.1 is pretty small. This version is faster than its predecessor and adds scroll instructions and a large numeric font. It does however introduces a new quirk by not incrementing the index register when reading or writing registers to memory.
-    constexpr bool PLATFORM_COSMIC = true;
+    inline bool PLATFORM_COSMIC = true;
 
 
 // QUIRKS
 
-    constexpr bool QUIRK_SHIFT                      = PLATFORM_COSMIC ? false   : true;
-    constexpr bool QUIRK_MEMORY_INCREMENT_BY_X      = PLATFORM_COSMIC ? false   : false;
-    constexpr bool QUIRK_MEMORY_LEAVE_I_UNCHANGED   = PLATFORM_COSMIC ? false   : true;
-    constexpr bool QUIRK_WRAP                       = PLATFORM_COSMIC ? false   : false;
-    constexpr bool QUIRK_JUMP                       = PLATFORM_COSMIC ? false   : true;
-    constexpr bool QUIRK_VBLANK                     = PLATFORM_COSMIC ? true    : false;
-    constexpr bool QUIRK_LOGIC                      = PLATFORM_COSMIC ? true    : false;
+    inline bool QUIRK_SHIFT                         = PLATFORM_COSMIC ? false   : true;
+    inline bool QUIRK_MEMORY_INCREMENT_BY_X         = PLATFORM_COSMIC ? false   : false;
+    inline bool QUIRK_MEMORY_LEAVE_I_UNCHANGED      = PLATFORM_COSMIC ? false   : true;
+    inline bool QUIRK_WRAP                          = PLATFORM_COSMIC ? false   : false;
+    inline bool QUIRK_JUMP                          = PLATFORM_COSMIC ? false   : true;
+    inline bool QUIRK_VBLANK                        = PLATFORM_COSMIC ? true    : false;
+    inline bool QUIRK_LOGIC                         = PLATFORM_COSMIC ? true    : false;
 
     // true -> Octo behaviour
     // false -> Original SUPERCHIP behaviour
@@ -61,7 +61,7 @@
 
 // EXECUTION SETTINGS
 
-    constexpr int EXECUTION_TARGET_STEPS = 60;      // maximum number of opcodes to run per frame
+    inline int EXECUTION_TARGET_STEPS = 60;             // maximum number of opcodes to run per frame
     constexpr int EXECUTION_CALL_STACK_DEPTH = 16;
 
     constexpr bool EXECUTION_WARN_FOR_0NNN = true;      // warn on use of opcodes designed to run machine code
@@ -103,3 +103,12 @@
 // STORAGE SETTINGS
 
     const std::filesystem::path STORAGE_FILE = "./chip8_storage.bin";
+
+
+// DATABASE SETTINGS
+
+    constexpr bool DATABASE_ADJUST_QUIRKS = true;
+    constexpr int DATABASE_DOWNLOAD_TIMEOUT = 10;
+
+    const std::string DATABASE_URL = "https://raw.githubusercontent.com/chip-8/chip-8-database/master/database/";
+    const std::filesystem::path DATABASE_DIR = "./chip8_database/";

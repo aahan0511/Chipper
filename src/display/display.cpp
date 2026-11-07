@@ -9,10 +9,22 @@
 #include <vector>
 
 
-constexpr int PIXEL_SIZE = PLATFORM_COSMIC ? DISPLAY_PIXEL_SIZE : (DISPLAY_PIXEL_SIZE / 2);
+int PIXEL_SIZE = PLATFORM_COSMIC ? DISPLAY_PIXEL_SIZE : (DISPLAY_PIXEL_SIZE / 2);
+
+std::vector<std::vector<bool>> display(SCREEN_HEIGHT, std::vector<bool>(SCREEN_WIDTH, 0));
+
+
+void setPlatformSize() {
+    SCREEN_WIDTH = PLATFORM_COSMIC ? 64 : 128;
+    SCREEN_HEIGHT = PLATFORM_COSMIC ? 32 : 64;
+    PIXEL_SIZE = PLATFORM_COSMIC ? DISPLAY_PIXEL_SIZE : (DISPLAY_PIXEL_SIZE / 2);
+    display.assign(SCREEN_HEIGHT, std::vector<bool>(SCREEN_WIDTH, 0));
+}
 
 
 void initDisplay() {
+    setPlatformSize();
+
     InitWindow(
         SCREEN_WIDTH * PIXEL_SIZE,
         SCREEN_HEIGHT * PIXEL_SIZE,
@@ -48,8 +60,6 @@ void resetDisplayStatus() {
     edited_display = false;
 }
 
-
-std::vector<std::vector<bool>> display(SCREEN_HEIGHT, std::vector<bool>(SCREEN_WIDTH, 0));
 
 void drawPixel(uint8_t x, uint8_t y) {
     DrawRectangle(

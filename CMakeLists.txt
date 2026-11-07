@@ -15,10 +15,15 @@ FetchContent_Declare(raylib
 set(BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(raylib)
 
+FetchContent_Declare(json
+  URL https://github.com/nlohmann/json/releases/download/v3.12.0/json.tar.xz)
+FetchContent_MakeAvailable(json)
+
 add_executable(Chipper
   main.cpp
   src/cli/cli.cpp
   src/cpu/cpu.cpp
+  src/database/database.cpp
   src/display/display.cpp
   src/draw/draw.cpp
   src/execute/execute.cpp
@@ -33,4 +38,4 @@ add_executable(Chipper
   src/storage/storage.cpp
   src/timer/timer.cpp
 )
-target_link_libraries(Chipper PRIVATE raylib)
+target_link_libraries(Chipper PRIVATE raylib nlohmann_json::nlohmann_json)

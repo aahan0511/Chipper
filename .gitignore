@@ -1,2 +1,7 @@
 build/
 .cache/
+
+chip8_database/
+chip8_storage.bin
+
+*.ch8

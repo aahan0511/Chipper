@@ -2,6 +2,7 @@
 
 #include "../../settings.hpp"
 
+#include "../database/database.hpp"
 #include "../display/display.hpp"
 #include "../execute/execute.hpp"
 #include "../font/font.hpp"
@@ -21,6 +22,7 @@ bool checkInit() {
 }
 
 void init(std::vector<uint8_t> &rom) {
+    adjustQuirksFromDatabase(rom);
     initDisplay();
     initAudio();
 

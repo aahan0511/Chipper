@@ -47,4 +47,6 @@ Most of my work is based on [Guide to making a CHIP-8 emulator](https://tobiasvl
 
 And without [Timendus' CHIP-8 test suite](https://github.com/Timendus/chip8-test-suite), I would not have been able to work out any of the bugs and quirks.
 
-Huge thanks to both of them!
+Finally only because of the [CHIP-8 database](https://github.com/chip-8/chip-8-database), am I able to properly run a few ROMs, without it, adjusting the quirks would have been pure chaos.
+
+Huge thanks to all of them!
