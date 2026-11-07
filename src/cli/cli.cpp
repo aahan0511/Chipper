@@ -32,15 +32,15 @@ int getTerminalWidth() {
 
 
 void drawSprtr(char symbol) {
-    std::cout << "\n";
+    std::cout << std::endl;
 
     int width = getTerminalWidth();
     for (int _ = 0; _ < width; _++) {
         std::cout << symbol;
     }
 
-    std::cout << "\n";
-    std::cout << "\n";
+    std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 void sprtrWithText(std::string text, char symbol) {
@@ -49,28 +49,28 @@ void sprtrWithText(std::string text, char symbol) {
         return;
     }
 
-    std::cout << "\n";
+    std::cout << std::endl;
 
     int t_width = getTerminalWidth();
-    int width = (t_width - text.size()) / 2;
-    for (int _ = 0; _ < width; _++) {
-        std::cout << symbol;
-    }
-    std::cout << text;
-    for (int _ = 0; _ < width; _++) {
-        std::cout << symbol;
-    }
+    int text_width = 1 + text.size() + 1;
+    int width = (t_width - text_width) / 2;
 
-    if (2 * width + text.size() < t_width)
+    for (int _ = 0; _ < width; _++)
+        std::cout << symbol;
+    std::cout << " " << text << " ";
+    for (int _ = 0; _ < width; _++)
         std::cout << symbol;
 
-    std::cout << "\n";
-    std::cout << "\n";
+    if (2 * width + text_width < t_width)
+        std::cout << symbol;
+
+    std::cout << std::endl;
+    std::cout << std::endl;
 }
 
 
 void error(std::string message, std::string symbol) {
-    std::cout << symbol << ": " << message << "\n";
+    std::cout << symbol << ": " << message << std::endl;
 
     sprtrWithText("END");
     if (checkInit())
@@ -79,13 +79,13 @@ void error(std::string message, std::string symbol) {
 }
 
 void warning(std::string message, std::string symbol) {
-    std::cout << symbol << ": " << message << "\n";
+    std::cout << symbol << ": " << message << std::endl;
 }
 
 void info(std::string message, std::string symbol) {
-    std::cout << symbol << ": " << message << "\n";
+    std::cout << symbol << ": " << message << std::endl;
 }
 
 void debug(std::string message, std::string symbol) {
-    std::cout << symbol << ": " << message << "\n";
+    std::cout << symbol << ": " << message << std::endl;
 }

@@ -1,5 +1,7 @@
 #include "execute.hpp"
 
+#include "../../settings.hpp"
+
 #include "../cli/cli.hpp"
 #include "../cpu/cpu.hpp"
 #include "../display/display.hpp"
@@ -18,12 +20,10 @@
 #include <string>
 
 
-constexpr uint8_t call_stack_depth = 0x10;
-
 std::stack<uint16_t> call_stack;
 
 void addCall(uint16_t call) {
-    if (call_stack.size() == call_stack_depth)
+    if (call_stack.size() == EXECUTION_CALL_STACK_DEPTH)
         error("call stack full");
 
     call_stack.push(call);
@@ -40,10 +40,10 @@ uint16_t popCall() {
 }
 
 
-bool warned_0 = false;
-bool warned_8 = false;
-bool warned_E = false;
-bool warned_F = false;
+bool warned_0 = !(EXECUTION_WARN_FOR_0NNN);
+bool warned_8 = !(EXECUTION_WARN_FOR_8XYN);
+bool warned_E = !(EXECUTION_WARN_FOR_E);
+bool warned_F = !(EXECUTION_WARN_FOR_F);
 
 void execute() {
     uint16_t opcode = readPC();

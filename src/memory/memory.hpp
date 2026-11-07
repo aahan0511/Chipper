@@ -1,16 +1,14 @@
 #pragma once
 
+#include "../../settings.hpp"
+
 #include <cstdint>
 #include <vector>
 
-
-constexpr int MEMORY_SIZE = 4096;
 
 void setMemory(uint16_t addr, uint8_t byt);
 
 uint8_t readMemory(uint16_t addr);
 
 
-constexpr uint16_t START_ADDR = 0x200;
-
-void loadROM(std::vector<uint8_t> &rom, uint16_t addr = START_ADDR);
+void loadROM(std::vector<uint8_t> &rom, uint16_t addr = MEMORY_ROM_LOAD_ADDRESS);

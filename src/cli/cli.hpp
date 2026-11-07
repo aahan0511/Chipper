@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../settings.hpp"
+
 #include <string>
 
 
@@ -8,15 +10,10 @@ void drawSprtr(char symbol = '-');
 void sprtrWithText(std::string text, char symbol = '=');
 
 
-constexpr std::string ERROR = "FATAL";
-constexpr std::string WARNING = "WARNING";
-constexpr std::string INFO = "INFO";
-constexpr std::string DEBUG = "DEBUG";
+void error(std::string message, std::string symbol = CLI_ERROR);
 
-void error(std::string message, std::string symbol = ERROR);
+void warning(std::string message, std::string symbol = CLI_WARNING);
 
-void warning(std::string message, std::string symbol = WARNING);
+void info(std::string message, std::string symbol = CLI_INFO);
 
-void info(std::string message, std::string symbol = INFO);
-
-void debug(std::string message, std::string symbol = DEBUG);
+void debug(std::string message, std::string symbol = CLI_DEBUG);

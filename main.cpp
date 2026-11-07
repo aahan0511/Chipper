@@ -3,13 +3,16 @@
 #include "src/runtime/runtime.hpp"
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 
 int main(int argc, char* args[]) {
-    sprtrWithText("START");
+        std::pair<std::vector<uint8_t>, std::string> rom_file = getROM(argc, args);
+        std::vector<uint8_t> rom = rom_file.first;
+        std::string file_label = rom_file.second;
 
-        std::vector<uint8_t> rom = getROM(argc, args);
+    sprtrWithText("START: " + file_label);
 
         info("running " + (std::string)args[1] + ".");
 
@@ -17,5 +20,5 @@ int main(int argc, char* args[]) {
 
         runtime(rom);
 
-    sprtrWithText("END");
+    sprtrWithText("END: " + file_label);
 }

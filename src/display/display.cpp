@@ -1,5 +1,7 @@
 #include "display.hpp"
 
+#include "../../settings.hpp"
+
 #include "raylib.h"
 
 #include <algorithm>
@@ -8,12 +10,12 @@
 
 void initDisplay() {
     InitWindow(
-        SCREEN_WIDTH * PIXEL_SIZE,
-        SCREEN_HEIGHT * PIXEL_SIZE,
+        SCREEN_WIDTH * DISPLAY_PIXEL_SIZE,
+        SCREEN_HEIGHT * DISPLAY_PIXEL_SIZE,
         "Chipper"
     );
 
-    SetTargetFPS(TARGET_FPS);
+    SetTargetFPS(DISPLAY_TARGET_FPS);
 
     clearDisplay();
     drawDisplay();
@@ -43,15 +45,15 @@ void resetDisplayStatus() {
 }
 
 
-std::vector<std::vector<Color>> display(SCREEN_HEIGHT, std::vector<Color>(SCREEN_WIDTH, BG));
+std::vector<std::vector<bool>> display(SCREEN_HEIGHT, std::vector<bool>(SCREEN_WIDTH, 0));
 
 void drawPixel(uint8_t x, uint8_t y) {
     DrawRectangle(
-        x * PIXEL_SIZE,
-        y * PIXEL_SIZE,
-        PIXEL_SIZE,
-        PIXEL_SIZE,
-        display[y][x]
+        x * DISPLAY_PIXEL_SIZE,
+        y * DISPLAY_PIXEL_SIZE,
+        DISPLAY_PIXEL_SIZE,
+        DISPLAY_PIXEL_SIZE,
+        display[y][x] ? PIXEL_ON : PIXEL_OFF
     );
 }
 
@@ -67,27 +69,21 @@ void drawDisplay() {
 }
 
 
-void setPixel(uint8_t x, uint8_t y, Color color) {
-    display[y][x] = color;
-}
-
 bool flipPixel(uint8_t x, uint8_t y) {
-    display[y][x] = ColorIsEqual(
-        display[y][x], BG
-    ) ? FG : BG;
+    display[y][x] = !(display[y][x]);
 
-    return ColorIsEqual(display[y][x], BG);
+    return !(display[y][x]);
 }
 
 void setPixelOn(uint8_t x, uint8_t y) {
-    display[y][x] = FG;
+    display[y][x] = 1;
 }
 
 void setPixelOff(uint8_t x, uint8_t y) {
-    display[y][x] = BG;
+    display[y][x] = 0;
 }
 
 
 void clearDisplay() {
-    std::fill(display.begin(), display.end(), std::vector<Color>(SCREEN_WIDTH, BG));
+    std::fill(display.begin(), display.end(), std::vector<bool>(SCREEN_WIDTH, 0));
 }

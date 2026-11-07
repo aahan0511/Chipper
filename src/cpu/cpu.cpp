@@ -9,7 +9,7 @@
 #include <vector>
 
 
-uint16_t PC = START_ADDR;
+uint16_t PC = MEMORY_ROM_LOAD_ADDRESS;
 
 void setPC(uint16_t addr) {
     PC = addr % 0x1000;
@@ -40,25 +40,23 @@ void returnPC() {
 }
 
 
-constexpr int REGISTER_N = 16;
-
-std::vector<uint8_t> registers(REGISTER_N);
+std::vector<uint8_t> registers(16);
 
 void setRegister(uint8_t vx, uint8_t content) {
-    if (vx >= REGISTER_N || vx < 0)
+    if (vx > 0xF || vx < 0)
         error("register out of bounds");
     registers[vx] = content;
 }
 
 uint8_t addToRegister(uint8_t vx, uint8_t content) {
-    if (vx >= REGISTER_N || vx < 0)
+    if (vx > 0xF || vx < 0)
         error("register out of bounds");
     registers[vx] += content;
     return registers[vx];
 }
 
 uint8_t readRegister(uint8_t vx) {
-    if (vx >= REGISTER_N || vx < 0)
+    if (vx > 0xF || vx < 0)
         error("register out of bounds");
     return registers[vx];
 }

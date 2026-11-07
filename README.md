@@ -5,6 +5,8 @@ The emulator implements the base CHIP-8 instructions with quirks aligned to the 
 
 ## Running
 
+You can change the settings and quirks inside `./settings.hpp`.
+
 ### Build
 
 If you have [`just`](https://github.com/casey/just):
@@ -54,6 +56,11 @@ just run <file>
 just run-with-build <file>
 ```
 > Builds, compiles and then runs the code
+
+```bash
+just test <chip8-test-suite directory>
+```
+> Goes through test one to seven in the CHIP-8 Test Suite and runs them one by one.
 
 ## To-do
 

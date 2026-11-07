@@ -15,7 +15,7 @@ std::unordered_map<std::string, bool> quirks = {
     {"vblank", true},
     {"logic", true},
 
-    {"addIndexLeaveFUnchanged", true},  // https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index
+    {"addIndexLeaveFUnchanged", true},
 };
 
 bool checkQuirk(std::string quirk) {

@@ -1,5 +1,7 @@
 #include "runtime.hpp"
 
+#include "../../settings.hpp"
+
 #include "../display/display.hpp"
 #include "../execute/execute.hpp"
 #include "../font/font.hpp"
@@ -21,7 +23,17 @@ bool checkInit() {
 void init(std::vector<uint8_t> &rom) {
     initDisplay();
     initAudio();
-    loadQuirks();
+    loadQuirks(
+        QUIRK_SHIFT,
+        QUIRK_MEMORY_INCREMENT_BY_X,
+        QUIRK_MEMORY_LEAVE_I_UNCHANGED,
+        QUIRK_WRAP,
+        QUIRK_JUMP,
+        QUIRK_VBLANK,
+        QUIRK_LOGIC,
+
+        QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED
+    );
     initialized = true;
 
     loadFont();
@@ -40,7 +52,7 @@ uint16_t loop(uint16_t steps) {
     execute();
     steps++;
 
-    if (steps >= TARGET_STEPS || (displayEdited() && checkQuirk("vblank"))) {
+    if (steps >= EXECUTION_TARGET_STEPS || (displayEdited() && checkQuirk("vblank"))) {
         steps = 0;
         drawDisplay();
 

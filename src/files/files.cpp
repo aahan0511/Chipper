@@ -9,6 +9,7 @@
 #include <fstream>
 #include <iostream>
 #include <string>
+#include <utility>
 #include <vector>
 
 
@@ -25,15 +26,21 @@ void checkFile(std::string file_name, std::filesystem::path file_path) {
 }
 
 
-std::vector<uint8_t> getROM(int argc, char* args[]) {
+std::pair<std::vector<uint8_t>, std::string> getROM(int argc, char* args[]) {
     if (argc == 1) {
-        error("please provide a chip-8 file to execute.");
+        error("please provide a CHIP-8 file to execute.");
     }
 
     std::string file_name = args[1];
     std::filesystem::path file_path(file_name);
-    if (argc > 2)
-        warning("only considering the first file (\"" + file_name + "\").");
+    std::string file_label = file_name;
+    if (argc >= 3) {
+        file_label = args[2];
+        if (argc == 3)
+            warning("only considering the first argument as a ROM (\"" + file_name + "\"), assuming second argument as file label (\"" + file_label + "\").");
+        if (argc > 3)
+            warning("only considering the first argument as a ROM (\"" + file_name + "\"), assuming second argument as file label (\"" + file_label + "\"), ignoring later arguments.");
+    }
 
     checkFile(file_name, file_path);
 
@@ -49,5 +56,5 @@ std::vector<uint8_t> getROM(int argc, char* args[]) {
     std::vector<uint8_t> rom(size);                         // *
     file.read(reinterpret_cast<char*>(rom.data()), size);   // *
 
-    return rom;
+    return {rom, file_label};
 }

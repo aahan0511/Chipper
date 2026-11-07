@@ -1,5 +1,7 @@
 #include "timer.hpp"
 
+#include "../../settings.hpp"
+
 #include <chrono>
 #include <cstdint>
 
@@ -13,7 +15,7 @@ void setDelayTimer(uint8_t content) {
 }
 
 uint8_t readDelayTimer() {
-    int elapsed = (double)(std::chrono::duration<double>(std::chrono::steady_clock::now() - delay_timer_time).count()) * FREQ;
+    int elapsed = (double)(std::chrono::duration<double>(std::chrono::steady_clock::now() - delay_timer_time).count()) * CPU_FREQ;
 
     if (elapsed >= delay_timer) {
         return 0;
@@ -32,7 +34,7 @@ void setSoundTimer(uint8_t content) {
 }
 
 bool checkSoundTimer() {
-    int elapsed = (double)(std::chrono::duration<double>(std::chrono::steady_clock::now() - sound_timer_time).count()) * FREQ;
+    int elapsed = (double)(std::chrono::duration<double>(std::chrono::steady_clock::now() - sound_timer_time).count()) * CPU_FREQ;
 
     if (elapsed >= sound_timer) {
         return false;

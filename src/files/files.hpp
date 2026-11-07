@@ -1,7 +1,8 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 
-std::vector<uint8_t> getROM(int argc, char* args[]);
+std::pair<std::vector<uint8_t>, std::string> getROM(int argc, char* args[]);
