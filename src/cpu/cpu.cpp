@@ -1,9 +1,10 @@
 #include "cpu.hpp"
 
+#include "../../settings.hpp"
+
 #include "../cli/cli.hpp"
 #include "../execute/execute.hpp"
 #include "../memory/memory.hpp"
-#include "../quirks/quirks.hpp"
 
 #include <cstdint>
 #include <vector>
@@ -79,10 +80,10 @@ uint16_t readIndex() {
 }
 
 void updateIndexUpdate(int X) {
-    if (checkQuirk("memoryLeaveIUnchanged"))
+    if (QUIRK_MEMORY_LEAVE_I_UNCHANGED)
         return;
 
-    if (checkQuirk("memoryIncrementByX")) {
+    if (QUIRK_MEMORY_INCREMENT_BY_X) {
         setIndex(readIndex() + X);
     } else {
         setIndex(readIndex() + X + 1);

@@ -10,7 +10,6 @@
 #include "../keypad/keypad.hpp"
 #include "../logical/logical.hpp"
 #include "../memory/memory.hpp"
-#include "../quirks/quirks.hpp"
 #include "../random/random.hpp"
 #include "../timer/timer.hpp"
 
@@ -184,7 +183,7 @@ void execute() {
             break;
         }
         case 0xB: {
-            if (checkQuirk("jump")) {
+            if (QUIRK_JUMP) {
                 uint8_t X = code_content / 0x100;
                 uint8_t x = readRegister(X);
 
@@ -249,7 +248,7 @@ void execute() {
 
             switch (type) {
                 case (0x1E): {
-                    if (checkQuirk("addIndexLeaveFUnchanged")) {
+                    if (QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED) {
                         addToIndex(x);
                     } else {
                         bool overflowed = addToIndex(x);

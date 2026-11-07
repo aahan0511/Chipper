@@ -6,7 +6,6 @@
 #include "../execute/execute.hpp"
 #include "../font/font.hpp"
 #include "../memory/memory.hpp"
-#include "../quirks/quirks.hpp"
 #include "../sound/sound.hpp"
 #include "../timer/timer.hpp"
 
@@ -23,17 +22,7 @@ bool checkInit() {
 void init(std::vector<uint8_t> &rom) {
     initDisplay();
     initAudio();
-    loadQuirks(
-        QUIRK_SHIFT,
-        QUIRK_MEMORY_INCREMENT_BY_X,
-        QUIRK_MEMORY_LEAVE_I_UNCHANGED,
-        QUIRK_WRAP,
-        QUIRK_JUMP,
-        QUIRK_VBLANK,
-        QUIRK_LOGIC,
 
-        QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED
-    );
     initialized = true;
 
     loadFont();
@@ -52,7 +41,7 @@ uint16_t loop(uint16_t steps) {
     execute();
     steps++;
 
-    if (steps >= EXECUTION_TARGET_STEPS || (displayEdited() && checkQuirk("vblank"))) {
+    if (steps >= EXECUTION_TARGET_STEPS || (displayEdited() && QUIRK_VBLANK)) {
         steps = 0;
         drawDisplay();
 

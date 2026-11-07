@@ -7,18 +7,31 @@
 #include <string>
 
 
+// PLATFORM
+
+    // true -> Cosmac VIP CHIP-8
+        // CHIP-8 was first designed by Joseph Weisbecker for the Cosmac VIP hobbyist DIY computer in 1977. After publishing about the virtual instruction set in the december 1978 issue of Byte magazine (under the title \"An easy programming system\") it took off on more hobbyist computers. One of the biggest advantages of programming in CHIP-8, apart from being relatively easy to use, was the fact that CHIP-8 ROMs were binary compatible between several different hobbyist computers.
+    // false -> Superchip 1.1
+        // Superchip 1.1 is the platform that most \"superchip\" interpreters implement, because it is the latest version and also because the difference between Superchip version 1.0 and 1.1 is pretty small. This version is faster than its predecessor and adds scroll instructions and a large numeric font. It does however introduces a new quirk by not incrementing the index register when reading or writing registers to memory.
+    constexpr bool PLATFORM_COSMIC = true;
+
+
 // QUIRKS
 
-    constexpr bool QUIRK_SHIFT = false;
-    constexpr bool QUIRK_MEMORY_INCREMENT_BY_X = false;
-    constexpr bool QUIRK_MEMORY_LEAVE_I_UNCHANGED = false;
-    constexpr bool QUIRK_WRAP = false;
-    constexpr bool QUIRK_JUMP = false;
-    constexpr bool QUIRK_VBLANK = true;
-    constexpr bool QUIRK_LOGIC = true;
+    constexpr bool QUIRK_SHIFT                      = PLATFORM_COSMIC ? false   : true;
+    constexpr bool QUIRK_MEMORY_INCREMENT_BY_X      = PLATFORM_COSMIC ? false   : false;
+    constexpr bool QUIRK_MEMORY_LEAVE_I_UNCHANGED   = PLATFORM_COSMIC ? false   : true;
+    constexpr bool QUIRK_WRAP                       = PLATFORM_COSMIC ? false   : false;
+    constexpr bool QUIRK_JUMP                       = PLATFORM_COSMIC ? false   : true;
+    constexpr bool QUIRK_VBLANK                     = PLATFORM_COSMIC ? true    : false;
+    constexpr bool QUIRK_LOGIC                      = PLATFORM_COSMIC ? true    : false;
+
+    // true -> Octo behaviour
+    // false -> Original SUPERCHIP behaviour
+    constexpr bool QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE  = true;
 
     // keep this true unless you are absolutely sure you need to change this
-    constexpr bool QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED = true; // https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index
+    constexpr bool QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED  = true; // https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index
 
 
 // CPU SETTINGS

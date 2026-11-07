@@ -1,7 +1,8 @@
 #include "logical.hpp"
 
+#include "../../settings.hpp"
+
 #include "../cpu/cpu.hpp"
-#include "../quirks/quirks.hpp"
 
 #include <cstdint>
 
@@ -20,7 +21,7 @@ void op1(
 ) {
     setRegister(X, x | y);
 
-    if (checkQuirk("logic"))
+    if (QUIRK_LOGIC)
         setRegister(0xF, 0);
 }
 
@@ -30,7 +31,7 @@ void op2(
 ) {
     setRegister(X, x & y);
 
-    if (checkQuirk("logic"))
+    if (QUIRK_LOGIC)
         setRegister(0xF, 0);
 }
 
@@ -40,7 +41,7 @@ void op3(
 ) {
     setRegister(X, x ^ y);
 
-    if (checkQuirk("logic"))
+    if (QUIRK_LOGIC)
         setRegister(0xF, 0);
 }
 
@@ -92,7 +93,7 @@ void op6(
     uint16_t X, uint16_t Y,
     uint8_t x, uint8_t y
 ) {
-    if (checkQuirk("shift")) {
+    if (QUIRK_SHIFT) {
         setRegister(X, x >> 1);
         setRegister(0xF, x % 2);
     } else {
@@ -105,7 +106,7 @@ void opE(
     uint16_t X, uint16_t Y,
     uint8_t x, uint8_t y
 ) {
-    if (checkQuirk("shift")) {
+    if (QUIRK_SHIFT) {
         setRegister(X, x << 1);
         setRegister(0xF, x / 0b10000000);
     } else {

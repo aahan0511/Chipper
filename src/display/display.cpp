@@ -8,10 +8,13 @@
 #include <vector>
 
 
+constexpr int PIXEL_SIZE = PLATFORM_COSMIC ? DISPLAY_PIXEL_SIZE : (DISPLAY_PIXEL_SIZE / 2);
+
+
 void initDisplay() {
     InitWindow(
-        SCREEN_WIDTH * DISPLAY_PIXEL_SIZE,
-        SCREEN_HEIGHT * DISPLAY_PIXEL_SIZE,
+        SCREEN_WIDTH * PIXEL_SIZE,
+        SCREEN_HEIGHT * PIXEL_SIZE,
         "Chipper"
     );
 
@@ -49,10 +52,10 @@ std::vector<std::vector<bool>> display(SCREEN_HEIGHT, std::vector<bool>(SCREEN_W
 
 void drawPixel(uint8_t x, uint8_t y) {
     DrawRectangle(
-        x * DISPLAY_PIXEL_SIZE,
-        y * DISPLAY_PIXEL_SIZE,
-        DISPLAY_PIXEL_SIZE,
-        DISPLAY_PIXEL_SIZE,
+        x * PIXEL_SIZE,
+        y * PIXEL_SIZE,
+        PIXEL_SIZE,
+        PIXEL_SIZE,
         display[y][x] ? PIXEL_ON : PIXEL_OFF
     );
 }
@@ -69,18 +72,42 @@ void drawDisplay() {
 }
 
 
+inline bool lores = true;
+
+void setLoRes() {
+    lores = true;
+    if (QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE) {
+        clearDisplay();
+    }
+}
+
+void setHiRes() {
+    lores = false;
+    if (QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE) {
+        clearDisplay();
+    }
+}
+
+
 bool flipPixel(uint8_t x, uint8_t y) {
-    display[y][x] = !(display[y][x]);
+    if (PLATFORM_COSMIC) {
+        display[y][x] = !(display[y][x]);
 
-    return !(display[y][x]);
-}
+        return !(display[y][x]);
+    } else {
+        if (lores) {
+            display[y][x] = !(display[y][x]);
+            display[y + 1][x] = !(display[y + 1][x]);
+            display[y][x + 1] = !(display[y][x + 1]);
+            display[y + 1][x + 1] = !(display[y + 1][x + 1]);
 
-void setPixelOn(uint8_t x, uint8_t y) {
-    display[y][x] = 1;
-}
+            return (!(display[y][x]) || !(display[y + 1][x]) || !(display[y][x + 1]) || !(display[y + 1][x + 1]));
+        } else {
+            display[y][x] = !(display[y][x]);
 
-void setPixelOff(uint8_t x, uint8_t y) {
-    display[y][x] = 0;
+            return !(display[y][x]);
+        }
+    }
 }
 
 

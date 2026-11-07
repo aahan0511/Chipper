@@ -27,7 +27,6 @@ add_executable(Chipper
   src/keypad/keypad.cpp
   src/logical/logical.cpp
   src/memory/memory.cpp
-  src/quirks/quirks.cpp
   src/random/random.cpp
   src/runtime/runtime.cpp
   src/sound/sound.cpp

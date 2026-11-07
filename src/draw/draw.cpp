@@ -1,9 +1,10 @@
 #include "draw.hpp"
 
+#include "../../settings.hpp"
+
 #include "../cpu/cpu.hpp"
 #include "../display/display.hpp"
 #include "../memory/memory.hpp"
-#include "../quirks/quirks.hpp"
 
 #include <algorithm>
 #include <cstdint>
@@ -16,7 +17,7 @@ void drawSprite(uint8_t x, uint8_t y, uint8_t height) {
     setRegister(0xF, 0);
     uint16_t addr = readIndex();
 
-    if (!(checkQuirk("wrap"))) {
+    if (!QUIRK_WRAP) {
         height = std::min(y + height, (int)SCREEN_HEIGHT) - y;
     }
 
@@ -24,7 +25,7 @@ void drawSprite(uint8_t x, uint8_t y, uint8_t height) {
         uint8_t layer = readMemory((addr + i) % 0x1000);
 
         uint8_t width = 7;
-        if (!(checkQuirk("wrap"))) {
+        if (!QUIRK_WRAP) {
             width = std::min(x + 7, (int)(SCREEN_WIDTH - 1)) - x;
         }
 
