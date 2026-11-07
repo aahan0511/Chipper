@@ -31,6 +31,7 @@
     // false -> Original SUPERCHIP behaviour
     constexpr bool QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE      = true;
     constexpr bool QUIRK_SUPERCHIP_SCROLL_WHOLE_PIXEL_LORES = true;
+    constexpr bool QUIRK_SUPERCHIP_LORES_DRAW_16_BY_16      = true;
 
     // keep this true unless you are absolutely sure you need to change this
     constexpr bool QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED  = true; // https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index

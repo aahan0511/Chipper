@@ -378,7 +378,7 @@ void execute() {
                             warned_S = true;
                         }
                     } else {
-                        getBigFontAddr(x);
+                        setIndex(getBigFontAddr(x));
                     }
 
                     break;

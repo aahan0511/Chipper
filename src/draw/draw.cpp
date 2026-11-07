@@ -66,13 +66,14 @@ void drawSuperSprite(uint8_t x, uint8_t y, uint8_t height) {
             clipped = 16 - height;
         }
 
-        uint8_t max_width = getRes() ? 7 : 15;
+        bool small_sprite = getRes() && !QUIRK_SUPERCHIP_LORES_DRAW_16_BY_16;
+        uint8_t max_width = small_sprite ? 7 : 15;
 
         for (uint8_t i = 0; i < height; i++) {
             bool flipped = false;
 
             uint16_t layer = (readMemory((addr + i * 2) % 0x1000) * 0b100000000) + readMemory((addr + i * 2 + 1) % 0x1000);
-            if (getRes()) {
+            if (small_sprite) {
                 layer = readMemory((addr + i) % 0x1000);
             }
 
