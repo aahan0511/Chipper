@@ -12,6 +12,7 @@ int main(int argc, char* args[]) {
         std::vector<uint8_t> rom = rom_file.first;
         std::string file_label = rom_file.second;
 
+    setFileLabel(file_label);
     sprtrWithText("START: " + file_label);
 
         info("running " + (std::string)args[1] + ".");
@@ -20,5 +21,5 @@ int main(int argc, char* args[]) {
 
         runtime(rom);
 
-    sprtrWithText("END: " + file_label);
+    sprtrWithText("END: " + getFileLabel());
 }

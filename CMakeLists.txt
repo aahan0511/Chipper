@@ -30,6 +30,7 @@ add_executable(Chipper
   src/random/random.cpp
   src/runtime/runtime.cpp
   src/sound/sound.cpp
+  src/storage/storage.cpp
   src/timer/timer.cpp
 )
 target_link_libraries(Chipper PRIVATE raylib)

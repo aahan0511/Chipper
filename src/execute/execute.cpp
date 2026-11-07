@@ -11,6 +11,7 @@
 #include "../logical/logical.hpp"
 #include "../memory/memory.hpp"
 #include "../random/random.hpp"
+#include "../storage/storage.hpp"
 #include "../timer/timer.hpp"
 
 #include <cstdint>
@@ -371,7 +372,38 @@ void execute() {
                     break;
                 }
                 case (0x30): {
-                    setIndex(getBigFontAddr(x));
+                    if (PLATFORM_COSMIC) {
+                        if (!warned_S) {
+                            warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                            warned_S = true;
+                        }
+                    } else {
+                        getBigFontAddr(x);
+                    }
+
+                    break;
+                }
+                case (0x75): {
+                    if (PLATFORM_COSMIC) {
+                        if (!warned_S) {
+                            warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                            warned_S = true;
+                        }
+                    } else {
+                        saveToFlags(X);
+                    }
+
+                    break;
+                }
+                case (0x85): {
+                    if (PLATFORM_COSMIC) {
+                        if (!warned_S) {
+                            warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                            warned_S = true;
+                        }
+                    } else {
+                        loadFromFlags(X);
+                    }
 
                     break;
                 }

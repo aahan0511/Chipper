@@ -88,8 +88,19 @@ void debug(std::string message, std::string symbol) {
 }
 
 
+std::string file_label = "";
+
+void setFileLabel(std::string label) {
+    file_label = label;
+}
+
+std::string getFileLabel() {
+    return file_label;
+}
+
+
 void stop(int status) {
-    sprtrWithText("END");
+    sprtrWithText("END" + getFileLabel());
     if (checkInit())
         deinit();
     exit(status);

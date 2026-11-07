@@ -39,6 +39,7 @@ test suite: build
       "5-quirks|Quirks test"
       "6-keypad|Keypad test"
       "7-beep|Beep test"
+      "8-scrolling|Scrolling test"
     )
     for entry in "${roms[@]}"; do
       ./{{build_dir}}/Chipper "{{suite}}/bin/${entry%%|*}.ch8" "${entry#*|}"
