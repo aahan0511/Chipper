@@ -72,10 +72,7 @@ void sprtrWithText(std::string text, char symbol) {
 void error(std::string message, std::string symbol) {
     std::cout << symbol << ": " << message << std::endl;
 
-    sprtrWithText("END");
-    if (checkInit())
-        deinit();
-    exit(EXIT_FAILURE);
+    stop(EXIT_FAILURE);
 }
 
 void warning(std::string message, std::string symbol) {
@@ -88,4 +85,12 @@ void info(std::string message, std::string symbol) {
 
 void debug(std::string message, std::string symbol) {
     std::cout << symbol << ": " << message << std::endl;
+}
+
+
+void stop(int status) {
+    sprtrWithText("END");
+    if (checkInit())
+        deinit();
+    exit(status);
 }

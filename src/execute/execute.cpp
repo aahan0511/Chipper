@@ -14,6 +14,7 @@
 #include "../timer/timer.hpp"
 
 #include <cstdint>
+#include <cstdlib>
 #include <format>
 #include <stack>
 #include <string>
@@ -54,7 +55,16 @@ void execute() {
 
     switch (code_type) {
         case 0x0: {
-            if (opcode == 0x00E0) {
+            if (opcode == 0x00FD) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    stop();
+                }
+            } else if (opcode == 0x00E0) {
                 clearDisplay();
             } else if (opcode == 0x00EE) {
                 returnPC();
@@ -75,6 +85,33 @@ void execute() {
                     }
                 } else {
                     setLoRes();
+                }
+            } else if (opcode == 0x00FB) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    scrollRight();
+                }
+            } else if (opcode == 0x00FC) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    scrollLeft();
+                }
+            } else if ((opcode / 0x10) == 0x00C) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    scrollDown(opcode % 0x10);
                 }
             } else {
                 if (!(warned_0)) {
@@ -330,6 +367,11 @@ void execute() {
                 }
                 case (0x29): {
                     setIndex(getFontAddr(x));
+
+                    break;
+                }
+                case (0x30): {
+                    setIndex(getBigFontAddr(x));
 
                     break;
                 }

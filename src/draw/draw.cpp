@@ -144,3 +144,37 @@ void drawSuperSprite(uint8_t x, uint8_t y, uint8_t height) {
         }
     }
 }
+
+
+void scrollDown(uint8_t N) {
+    if (getRes()) {
+        if (QUIRK_SUPERCHIP_SCROLL_WHOLE_PIXEL_LORES)
+            shiftDisplayDown((N % 0x10) * 2);
+        else
+            shiftDisplayDown((N % 0x10));
+    } else {
+        shiftDisplayDown(N % 0x10);
+    }
+}
+
+void scrollRight() {
+    if (getRes()) {
+        if (QUIRK_SUPERCHIP_SCROLL_WHOLE_PIXEL_LORES)
+            shiftDisplayRight(8);
+        else
+            shiftDisplayRight(4);
+    } else {
+        shiftDisplayRight(4);
+    }
+}
+
+void scrollLeft() {
+    if (getRes()) {
+        if (QUIRK_SUPERCHIP_SCROLL_WHOLE_PIXEL_LORES)
+            shiftDisplayLeft(8);
+        else
+            shiftDisplayLeft(4);
+    } else {
+        shiftDisplayLeft(4);
+    }
+}

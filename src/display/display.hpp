@@ -36,4 +36,11 @@ void setHiRes();
 bool flipPixel(uint8_t x, uint8_t y);
 
 
+void shiftDisplayDown(uint8_t n);
+
+void shiftDisplayRight(uint8_t n);
+
+void shiftDisplayLeft(uint8_t n);
+
+
 void clearDisplay();

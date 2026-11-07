@@ -28,7 +28,8 @@
 
     // true -> Octo behaviour
     // false -> Original SUPERCHIP behaviour
-    constexpr bool QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE  = true;
+    constexpr bool QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE      = true;
+    constexpr bool QUIRK_SUPERCHIP_SCROLL_WHOLE_PIXEL_LORES = true;
 
     // keep this true unless you are absolutely sure you need to change this
     constexpr bool QUIRK_EXTRA_ADD_INDEX_LEAVE_F_UNCHANGED  = true; // https://tobiasvl.github.io/blog/write-a-chip-8-emulator/#fx1e-add-to-index
@@ -71,7 +72,8 @@
 // FONT SETTINGS
     // The inbuilt font can be configured at src/font/font_glyphs.hpp
 
-    constexpr uint16_t FONT_LOAD_ADDRESS = 0x050;
+    constexpr uint16_t FONT_LOAD_ADDRESS = 0x0000;
+    constexpr uint16_t BIG_FONT_LOAD_ADDRESS = FONT_LOAD_ADDRESS + 0x50; // Make sure BIG_FONT_LOAD_ADDRESS is atleast 0x50 more than FONT_LOAD_ADDRESS
 
 
 // KEYPAD SETTINGS

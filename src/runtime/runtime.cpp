@@ -26,6 +26,7 @@ void init(std::vector<uint8_t> &rom) {
     initialized = true;
 
     loadFont();
+    loadBigFont();
     loadROM(rom);
 }
 

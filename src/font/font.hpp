@@ -7,5 +7,9 @@
 
 void loadFont(uint16_t startAddr = FONT_LOAD_ADDRESS);
 
+void loadBigFont(uint16_t startAddr = BIG_FONT_LOAD_ADDRESS);
+
 
 uint16_t getFontAddr(uint8_t c);
+
+uint16_t getBigFontAddr(uint8_t c);

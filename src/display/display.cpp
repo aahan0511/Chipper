@@ -119,6 +119,31 @@ bool flipPixel(uint8_t x, uint8_t y) {
 }
 
 
+void shiftDisplayDown(uint8_t n) {
+    std::vector<std::vector<bool>> empty_region(n, std::vector<bool>(SCREEN_WIDTH, 0));
+    display.erase(display.begin() + (SCREEN_HEIGHT - n), display.end());
+    display.insert(display.begin(), empty_region.begin(), empty_region.end());
+}
+
+void shiftDisplayRight(uint8_t n) {
+    std::vector<bool> empty_region_horizontal(n, 0);
+
+    for (std::vector<bool> &row : display) {
+        row.erase(row.begin() + (SCREEN_WIDTH - n), row.end());
+        row.insert(row.begin(), empty_region_horizontal.begin(), empty_region_horizontal.end());
+    }
+}
+
+void shiftDisplayLeft(uint8_t n) {
+    std::vector<bool> empty_region_horizontal(n, 0);
+
+    for (std::vector<bool> &row : display) {
+        row.erase(row.begin(), row.begin() + n);
+        row.insert(row.end(), empty_region_horizontal.begin(), empty_region_horizontal.end());
+    }
+}
+
+
 void clearDisplay() {
     std::fill(display.begin(), display.end(), std::vector<bool>(SCREEN_WIDTH, 0));
 }
