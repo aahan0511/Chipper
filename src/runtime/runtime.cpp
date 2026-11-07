@@ -7,6 +7,7 @@
 #include "../font/font.hpp"
 #include "../memory/memory.hpp"
 #include "../sound/sound.hpp"
+#include "../storage/storage.hpp"
 #include "../timer/timer.hpp"
 
 #include <cstdint>
@@ -25,6 +26,7 @@ void init(std::vector<uint8_t> &rom) {
 
     initialized = true;
 
+    readFlagsFile();
     loadFont();
     loadBigFont();
     loadROM(rom);

@@ -3,6 +3,7 @@
 #include "raylib.h"
 
 #include <cstdint>
+#include <filesystem>
 #include <map>
 #include <string>
 
@@ -96,3 +97,8 @@
 // MEMORY SETTINGS
 
     constexpr uint16_t MEMORY_ROM_LOAD_ADDRESS = 0x200;
+
+
+// STORAGE SETTINGS
+
+    const std::filesystem::path STORAGE_FILE = "./chip8_storage.bin";
