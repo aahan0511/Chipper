@@ -43,6 +43,7 @@ bool warned_0 = !(EXECUTION_WARN_FOR_0NNN);
 bool warned_8 = !(EXECUTION_WARN_FOR_8XYN);
 bool warned_E = !(EXECUTION_WARN_FOR_E);
 bool warned_F = !(EXECUTION_WARN_FOR_F);
+bool warned_S = !(EXECUTION_WARN_FOR_SUPERCHIP);
 
 void execute() {
     uint16_t opcode = readPC();
@@ -57,6 +58,24 @@ void execute() {
                 clearDisplay();
             } else if (opcode == 0x00EE) {
                 returnPC();
+            } else if (opcode == 0x00FF) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    setHiRes();
+                }
+            } else if (opcode == 0x00FE) {
+                if (PLATFORM_COSMIC) {
+                    if (!warned_S) {
+                        warning("opcode 0x" + std::format("{:04X}", opcode) + " is from the Superchip syntax, set platform to Superchip in settings if this was meant to run as a Superchip ROM");
+                        warned_S = true;
+                    }
+                } else {
+                    setLoRes();
+                }
             } else {
                 if (!(warned_0)) {
                     warning("opcode 0x" + std::format("{:04X}", opcode) + " is ignored");
@@ -214,7 +233,10 @@ void execute() {
             uint8_t x = readRegister(X);
             uint8_t y = readRegister(Y);
 
-            drawSprite(x, y, N);
+            if (PLATFORM_COSMIC)
+                drawSprite(x, y, N);
+            else
+                drawSuperSprite(x, y, N);
             displayEdit();
 
             break;

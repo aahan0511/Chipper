@@ -13,7 +13,7 @@
         // CHIP-8 was first designed by Joseph Weisbecker for the Cosmac VIP hobbyist DIY computer in 1977. After publishing about the virtual instruction set in the december 1978 issue of Byte magazine (under the title \"An easy programming system\") it took off on more hobbyist computers. One of the biggest advantages of programming in CHIP-8, apart from being relatively easy to use, was the fact that CHIP-8 ROMs were binary compatible between several different hobbyist computers.
     // false -> Superchip 1.1
         // Superchip 1.1 is the platform that most \"superchip\" interpreters implement, because it is the latest version and also because the difference between Superchip version 1.0 and 1.1 is pretty small. This version is faster than its predecessor and adds scroll instructions and a large numeric font. It does however introduces a new quirk by not incrementing the index register when reading or writing registers to memory.
-    constexpr bool PLATFORM_COSMIC = true;
+    constexpr bool PLATFORM_COSMIC = false;
 
 
 // QUIRKS
@@ -61,10 +61,11 @@
     constexpr int EXECUTION_TARGET_STEPS = 60;      // maximum number of opcodes to run per frame
     constexpr int EXECUTION_CALL_STACK_DEPTH = 16;
 
-    constexpr bool EXECUTION_WARN_FOR_0NNN = true;  // warn on use of opcodes designed to run machine code
-    constexpr bool EXECUTION_WARN_FOR_8XYN = true;  // warn on use of class 8 opcodes outside the defined operations
-    constexpr bool EXECUTION_WARN_FOR_E = true;     // warn on use of class E opcodes other than EX93 AND EXA1
-    constexpr bool EXECUTION_WARN_FOR_F = true;     // warn on use of class F opcodes outside the defined set
+    constexpr bool EXECUTION_WARN_FOR_0NNN = true;      // warn on use of opcodes designed to run machine code
+    constexpr bool EXECUTION_WARN_FOR_8XYN = true;      // warn on use of class 8 opcodes outside the defined operations
+    constexpr bool EXECUTION_WARN_FOR_E = true;         // warn on use of class E opcodes other than EX93 AND EXA1
+    constexpr bool EXECUTION_WARN_FOR_F = true;         // warn on use of class F opcodes outside the defined set
+    constexpr bool EXECUTION_WARN_FOR_SUPERCHIP = true; // warn on use of Superchip instructions when platform is set to Cosmic
 
 
 // FONT SETTINGS

@@ -26,6 +26,8 @@ void drawPixel(uint8_t x, uint8_t y);
 void drawDisplay();
 
 
+bool getRes();
+
 void setLoRes();
 
 void setHiRes();

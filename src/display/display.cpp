@@ -5,6 +5,7 @@
 #include "raylib.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <vector>
 
 
@@ -74,6 +75,10 @@ void drawDisplay() {
 
 inline bool lores = true;
 
+bool getRes() {
+    return lores;
+}
+
 void setLoRes() {
     lores = true;
     if (QUIRK_SUPERCHIP_CLEAR_ON_RES_CHANGE) {
@@ -96,6 +101,9 @@ bool flipPixel(uint8_t x, uint8_t y) {
         return !(display[y][x]);
     } else {
         if (lores) {
+            x *= 2;
+            y *= 2;
+
             display[y][x] = !(display[y][x]);
             display[y + 1][x] = !(display[y + 1][x]);
             display[y][x + 1] = !(display[y][x + 1]);
