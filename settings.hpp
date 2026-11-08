@@ -55,8 +55,8 @@
     constexpr int DISPLAY_TARGET_FPS = 60;
     constexpr int DISPLAY_PIXEL_SIZE = 30;
 
-    constexpr Color PIXEL_OFF = BLACK;
-    constexpr Color PIXEL_ON = WHITE;
+    inline Color PIXEL_OFF = BLACK;
+    inline Color PIXEL_ON = WHITE;
 
 
 // EXECUTION SETTINGS
@@ -108,6 +108,9 @@
 // DATABASE SETTINGS
 
     constexpr bool DATABASE_ADJUST_QUIRKS = true;
+    constexpr bool DATABASE_ADJUST_TICKRATE = true;
+    constexpr bool DATABASE_ADJUST_COLORS = true;
+    constexpr bool DATABASE_SHOW_CONTROLS = true;
     constexpr int DATABASE_DOWNLOAD_TIMEOUT = 10;
 
     const std::string DATABASE_URL = "https://raw.githubusercontent.com/chip-8/chip-8-database/master/database/";

@@ -22,7 +22,7 @@ bool checkInit() {
 }
 
 void init(std::vector<uint8_t> &rom) {
-    adjustQuirksFromDatabase(rom);
+    adjustFromDatabase(rom);
     initDisplay();
     initAudio();
 

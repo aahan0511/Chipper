@@ -1,4 +1,4 @@
-// This file was AI-generated
+// This file was AI-assisted
 
 #include "database.hpp"
 
@@ -6,13 +6,16 @@
 
 #include "../cli/cli.hpp"
 
+#include "raylib.h"
 #include <nlohmann/json.hpp>
 
+#include <algorithm>
 #include <array>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <filesystem>
+#include <format>
 #include <fstream>
 #include <set>
 #include <string>
@@ -123,43 +126,74 @@ std::string quirksSummary() {
 }
 
 
-void adjustQuirksFromDatabase(const std::vector<uint8_t> &rom) {
-    if (!DATABASE_ADJUST_QUIRKS)
+bool parseColor(const json &value, Color &out) {
+    if (!value.is_string())
+        return false;
+
+    std::string hex = value.get<std::string>();
+    if (hex.size() != 7 || hex[0] != '#' || hex.find_first_not_of("0123456789abcdefABCDEF", 1) != std::string::npos)
+        return false;
+
+    uint32_t rgb = std::stoul(hex.substr(1), nullptr, 16);
+    out = {(uint8_t)(rgb >> 16), (uint8_t)(rgb >> 8), (uint8_t)rgb, 255};
+    return true;
+}
+
+void adjustColors(const json &rom_entry) {
+    if (!rom_entry.contains("colors") || !rom_entry["colors"].contains("pixels"))
         return;
 
-    std::error_code ec;
-    std::filesystem::create_directories(DATABASE_DIR, ec);
-
-    const std::array<std::string, 3> files = {"sha1-hashes.json", "programs.json", "platforms.json"};
-    info("downloading the CHIP-8 database.");
-    for (const std::string &name : files)
-        if (!downloadFile(name))
-            warning("could not download \"" + name + "\", using the cached copy if there is one.");
-
-    json hashes, programs, platforms;
-    if (!loadJSON("sha1-hashes.json", hashes) || !loadJSON("programs.json", programs) || !loadJSON("platforms.json", platforms)) {
-        warning("CHIP-8 database is unavailable, using the platform and quirks from settings.hpp.");
-        return;
-    }
-
-    std::string hash = sha1(rom);
-    info("ROM SHA-1: " + hash + ".");
-
-    if (!hashes.contains(hash) || !hashes[hash].is_number_integer()) {
-        info("ROM not found in the CHIP-8 database, using the platform and quirks from settings.hpp.");
+    const json &pixels = rom_entry["colors"]["pixels"];
+    Color off, on;
+    if (!pixels.is_array() || pixels.size() < 2 || !parseColor(pixels[0], off) || !parseColor(pixels[1], on)) {
+        warning("colors in the CHIP-8 database are malformed, using the colors from settings.hpp.");
         return;
     }
 
-    size_t program_index = hashes[hash].get<size_t>();
-    if (!programs.is_array() || program_index >= programs.size()) {
-        warning("CHIP-8 database is malformed, using the platform and quirks from settings.hpp.");
+    PIXEL_OFF = off;
+    PIXEL_ON = on;
+    info("colors: off=" + pixels[0].get<std::string>() + " on=" + pixels[1].get<std::string>() + ".");
+}
+
+
+std::string keyboardKeyName(uint8_t key) {
+    auto mapped = KEYPAD_MAP.find(key);
+    if (mapped == KEYPAD_MAP.end())
+        return "unmapped";
+
+    int code = mapped->second;
+    if (code > 32 && code < 127)
+        return std::string(1, (char)code);
+    return "key " + std::to_string(code);
+}
+
+void showControls(const json &rom_entry) {
+    if (!rom_entry.contains("keys") || !rom_entry["keys"].is_object() || rom_entry["keys"].empty())
         return;
+
+    const json &keys = rom_entry["keys"];
+    const std::vector<std::string> order = {"up", "down", "left", "right", "a", "b", "player2Up", "player2Down"};
+
+    std::vector<std::string> names = order;
+    for (auto &[name, _] : keys.items())
+        if (std::find(order.begin(), order.end(), name) == order.end())
+            names.push_back(name);
+
+    std::string listed;
+    for (const std::string &name : names) {
+        if (!keys.contains(name) || !keys[name].is_number_integer())
+            continue;
+
+        uint8_t key = keys[name].get<int>() % 0x10;
+        listed += (listed.empty() ? "" : ", ") + name + "=" + std::format("{:X}", key) + " (" + keyboardKeyName(key) + ")";
     }
 
-    const json &program = programs[program_index];
-    const json &rom_entry = program["roms"][hash];
-    std::string title = program.value("title", "unknown");
+    if (!listed.empty())
+        info("controls: " + listed + ".");
+}
 
+
+void adjustPlatform(const json &platforms, const json &rom_entry, const std::string &title) {
     std::vector<std::string> rom_platforms = rom_entry.value("platforms", std::vector<std::string>{});
     if (rom_entry.contains("quirkyPlatforms"))
         for (auto &[name, _] : rom_entry["quirkyPlatforms"].items())
@@ -191,7 +225,8 @@ void adjustQuirksFromDatabase(const std::vector<uint8_t> &rom) {
     for (const json &entry : platforms) {
         if (entry.value("id", "") == platform && entry.contains("quirks")) {
             applyQuirks(entry["quirks"]);
-            EXECUTION_TARGET_STEPS = entry.value("defaultTickrate", EXECUTION_TARGET_STEPS);
+            if (DATABASE_ADJUST_TICKRATE)
+                EXECUTION_TARGET_STEPS = entry.value("defaultTickrate", EXECUTION_TARGET_STEPS);
             platform_found = true;
             break;
         }
@@ -207,7 +242,65 @@ void adjustQuirksFromDatabase(const std::vector<uint8_t> &rom) {
         return;
     }
 
-    info("found \"" + title + "\" in the CHIP-8 database, using the " + platform + " platform and quirks.");
+    info("using the " + platform + " platform and quirks.");
     info("quirks: " + quirksSummary() + ".");
+}
+
+
+void adjustFromDatabase(const std::vector<uint8_t> &rom) {
+    if (!DATABASE_ADJUST_QUIRKS && !DATABASE_ADJUST_TICKRATE && !DATABASE_ADJUST_COLORS && !DATABASE_SHOW_CONTROLS)
+        return;
+
+    std::error_code ec;
+    std::filesystem::create_directories(DATABASE_DIR, ec);
+
+    const std::array<std::string, 3> files = {"sha1-hashes.json", "programs.json", "platforms.json"};
+    info("downloading the CHIP-8 database.");
+    for (const std::string &name : files)
+        if (!downloadFile(name))
+            warning("could not download \"" + name + "\", using the cached copy if there is one.");
+
+    json hashes, programs, platforms;
+    if (!loadJSON("sha1-hashes.json", hashes) || !loadJSON("programs.json", programs) || !loadJSON("platforms.json", platforms)) {
+        warning("CHIP-8 database is unavailable, using the settings from settings.hpp.");
+        return;
+    }
+
+    std::string hash = sha1(rom);
+    info("ROM SHA-1: " + hash + ".");
+
+    if (!hashes.contains(hash) || !hashes[hash].is_number_integer()) {
+        info("ROM not found in the CHIP-8 database, using the settings from settings.hpp.");
+        return;
+    }
+
+    size_t program_index = hashes[hash].get<size_t>();
+    if (!programs.is_array() || program_index >= programs.size()
+        || !programs[program_index].contains("roms") || !programs[program_index]["roms"].contains(hash)) {
+        warning("CHIP-8 database is malformed, using the settings from settings.hpp.");
+        return;
+    }
+
+    const json &program = programs[program_index];
+    const json &rom_entry = program["roms"][hash];
+    std::string title = program.value("title", "unknown");
+
+    info("found \"" + title + "\" in the CHIP-8 database.");
+
+    if (DATABASE_ADJUST_QUIRKS)
+        adjustPlatform(platforms, rom_entry, title);
+
+    if (DATABASE_ADJUST_TICKRATE && rom_entry.contains("tickrate")) {
+        if (rom_entry["tickrate"].is_number_integer() && rom_entry["tickrate"].get<int>() > 0)
+            EXECUTION_TARGET_STEPS = rom_entry["tickrate"].get<int>();
+        else
+            warning("tickrate in the CHIP-8 database is malformed, ignoring it.");
+    }
     info("tickrate: " + std::to_string(EXECUTION_TARGET_STEPS) + " opcodes per frame.");
+
+    if (DATABASE_ADJUST_COLORS)
+        adjustColors(rom_entry);
+
+    if (DATABASE_SHOW_CONTROLS)
+        showControls(rom_entry);
 }
