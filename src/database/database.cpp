@@ -22,8 +22,6 @@
 using json = nlohmann::json;
 
 
-// SHA-1
-
 uint32_t rotl(uint32_t value, int bits) {
     return (value << bits) | (value >> (32 - bits));
 }
@@ -72,8 +70,6 @@ std::string sha1(const std::vector<uint8_t> &data) {
 }
 
 
-// DOWNLOADING
-
 bool downloadFile(const std::string &name) {
     std::filesystem::path target = DATABASE_DIR / name;
     std::filesystem::path temp = DATABASE_DIR / (name + ".part");
@@ -101,8 +97,6 @@ bool loadJSON(const std::string &name, json &out) {
     return !out.is_discarded();
 }
 
-
-// QUIRKS
 
 const std::set<std::string> COSMIC_PLATFORMS = {"originalChip8", "modernChip8"};
 const std::set<std::string> SUPERCHIP_PLATFORMS = {"superchip", "superchip1", "chip48"};

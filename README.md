@@ -5,7 +5,8 @@ The emulator implements the base CHIP-8 instructions with quirks aligned to the 
 
 ## Running
 
-You can change the settings and quirks inside `./settings.hpp`.
+You can change the settings and quirks inside `./settings.hpp`. 
+When running a ROM, the intrepreter tries to fetch its quirks from the CHIP-8 Database, if it doesn't find the ROM in the database, it uses the default quirks set in settings.hpp, if your ROM isn't in the database, you should set `PLATFORM_COSMIC` and the quirks in `./settings.hpp` to your ROM's specific quirks.
 
 ### Quick start
 
