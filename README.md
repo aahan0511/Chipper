@@ -1,7 +1,7 @@
 # CHIP-8 Emulator
 
 This project is a CHIP-8 emulator for [Hack Club's Chipper](https://chipper.hackclub.com/) written in C++ and raylib.
-The emulator implements the base CHIP-8 instructions with quirks aligned to the original COSMIC VIP.
+The emulator implements the base CHIP-8 instructions and SUPERCHIP 1.1 with quirks aligned to the ROM's entry in the CHIP-8 database.
 
 ## Running
 
